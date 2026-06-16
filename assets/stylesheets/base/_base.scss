@@ -221,7 +221,7 @@ img {
     }
 }
 
-.sticky-element {
+.sticky-element:not(.block-editor-block-list__block) {
     position: sticky;
     position: -webkit-sticky;
     top: calc(var(--header-height, 75px) + var(--admin-bar-height, 0px));

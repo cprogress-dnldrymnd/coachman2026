@@ -39,6 +39,7 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 | `ajax.php` | AJAX handlers (dealer details) |
 | `woocommerce.php` | WooCommerce integration |
 | `gutenberg-blocks.php` | Native `coachman/*` Gutenberg block registration & render callbacks |
+| `block-migration.php` | Bulk migrator: rewrites `carbon-fields/*` block markup to `coachman/*` in `post_content`; adds **Tools → Migrate Carbon Blocks** admin page (dry-run / run / revert); backs up originals to `_cm_premigration_content` post meta |
 
 ## Custom Post Types & Taxonomies
 
