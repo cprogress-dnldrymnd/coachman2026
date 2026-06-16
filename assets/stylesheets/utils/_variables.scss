@@ -1,0 +1,16 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+$base-url: "./assets/" !default;
+$image-url: "./assets/images/" !default;
+$font-url: "./assets/fonts/" !default;
+
+:root {
+    --logo-color: #282d32;
+    --dark: #1c272e;
+    --maroon: #841d26;
+    --lightgray: #f2f2f2;
+    --lightgray-2: #eeeff2;
+    --bs-border-radius: 5px;
+    --bs-border-color: #cdcdcd;
+}

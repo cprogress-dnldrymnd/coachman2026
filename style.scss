@@ -1,0 +1,30 @@
+/* 
+Theme Name: Coachman
+Author: Digitally Disruptive
+Author URI: https://digitallydisruptive.co.uk/
+Version: 1.0.0
+Text Domain: glossop-caravans
+*/
+
+/*-----------------------------------------------------------------------------------*/
+/* Vendors
+/*-----------------------------------------------------------------------------------*/
+@import "assets/vendors/bootstrap/scss/bootstrap";
+@import "assets/vendors/swiper/scss/swiper";
+/*-----------------------------------------------------------------------------------*/
+/* Utils
+/*-----------------------------------------------------------------------------------*/
+@import "assets/stylesheets/utils/mixins", "assets/stylesheets/utils/variables", "assets/stylesheets/utils/animations";
+/*-----------------------------------------------------------------------------------*/
+/* Base
+/*-----------------------------------------------------------------------------------*/
+@import "assets/stylesheets/base/fonts", "assets/stylesheets/base/base", "assets/stylesheets/base/helpers",
+    "assets/stylesheets/base/typography", "assets/stylesheets/base/fonts";
+/*-----------------------------------------------------------------------------------*/
+/* Header & Footer
+/*-----------------------------------------------------------------------------------*/
+@import "assets/stylesheets/sections/header", "assets/stylesheets/sections/footer",
+    "assets/stylesheets/sections/sections", "assets/stylesheets/sections/blocks";
+/*-----------------------------------------------------------------------------------*/
+/* Plugins
+/*-----------------------------------------------------------------------------------*/

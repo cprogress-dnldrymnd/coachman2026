@@ -1,0 +1,316 @@
+.offcanvas-form--form-fields {
+    padding: 30px;
+
+    .form-control {
+        background-color: var(--lightgray-color-4);
+        border: none;
+    }
+}
+
+.gallery-row {
+    @include responsive(xs) {
+        --bs-gutter-x: 5px;
+        --bs-gutter-y: 5px;
+    }
+}
+
+#gallery-tab-pane {
+    @include responsive(mobile) {
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
+}
+
+.listing-inner--mobile-sticky {
+    z-index: 999;
+    left: 0;
+    right: 0;
+    box-shadow: 0px -5px 16px #0000001f;
+}
+
+.delear-details {
+    .logo-box {
+        img {
+            max-width: 140px;
+        }
+    }
+}
+
+.dealer--locator--holder {
+    .dealer--locator {
+        .wpsl-search {
+            background-color: transparent;
+        }
+        #wpsl-wrap {
+            margin: 0;
+            .wpsl-search {
+                #wpsl-search-wrap {
+                    margin-bottom: 30px;
+                    div {
+                        display: flex !important;
+                        gap: 10px;
+                        margin: 0;
+                    }
+                    form {
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 10px;
+                        select,
+                        #wpsl-search-input {
+                            padding: 17px 20px;
+                            font-size: 15px;
+                            border-color: var(--dark);
+                            line-height: 1;
+                            width: 100% !important;
+                        }
+                        > div {
+                            float: none;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                        }
+
+                        div label {
+                            width: auto;
+                            margin: 0;
+                            display: flex;
+                            line-height: 1;
+                            align-items: center;
+                            @include responsive(md-lg) {
+                                white-space: nowrap;
+                            }
+                        }
+                        .wpsl-input {
+                            margin: 0;
+                            input {
+                                border-radius: 0;
+                                width: 100% !important;
+                            }
+                            @include responsive(xs) {
+                                flex-direction: column;
+                                > div {
+                                    width: 100%;
+                                }
+                            }
+                        }
+                        .wpsl-dropdown {
+                            width: auto;
+                            border-radius: 0;
+                        }
+                        .wpsl-select-wrap {
+                            margin: 0;
+                            @include responsive(xs) {
+                                flex-direction: column;
+                                > div {
+                                    width: 100%;
+                                    flex-direction: column;
+                                }
+                            }
+                        }
+                        #wpsl-search-btn {
+                            background-color: var(--wp--preset--color--maroon) !important;
+                            background-image: none;
+                            border-radius: 0;
+                            border: none;
+                            color: #fff;
+                            padding: 17px 20px;
+                            @include responsive(xs) {
+                                width: 100%;
+                                margin: 0;
+                            }
+                        }
+                        #wpsl-radius {
+                            margin: 0;
+                            @include responsive(xs) {
+                                flex-direction: column;
+                            }
+                        }
+                        @include responsive(xs) {
+                            flex-direction: column;
+                            > div {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+            #wpsl-result-list {
+                background-color: var(--wp--preset--color--lightgray-2);
+                margin: 0;
+                width: 40%;
+                #wpsl-stores {
+                    padding-top: 40px;
+                    padding-bottom: 40px;
+                    max-height: 800px;
+                    overflow: auto;
+                    @include responsive(md-lg) {
+                        padding-left: 12px;
+                        margin-left: var(--margin, 92.5px);
+                    }
+                    ul {
+                        li {
+                            padding: 0;
+                            border-bottom: 1px solid #000;
+                            padding-bottom: 40px;
+                            margin-bottom: 40px;
+                            h4 {
+                                font-size: 18px;
+                                font-weight: 400;
+                                margin-bottom: 20px;
+                            }
+                            .distance {
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                margin-top: 30px;
+
+                                svg {
+                                    width: 14px;
+                                    height: auto;
+                                }
+                            }
+                            .wpsl-contact-details {
+                                margin-top: 30px;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                    @include responsive(xs-sm) {
+                        max-height: unset;
+                        height: auto !important;
+                    }
+                }
+                @include responsive(xs-sm) {
+                    width: 100%;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+            }
+            #wpsl-gmap {
+                width: 60%;
+                @include responsive(xs-sm) {
+                    width: 100%;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+.listing--buttons.listing--buttons.listing--buttons {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    .btn {
+        padding: 0;
+        border: none;
+        flex-grow: 1;
+        a {
+            padding: 18px 25px;
+            font-size: 15px;
+            border: 1px solid !important;
+            display: block;
+            justify-content: center;
+
+            @include responsive(xs) {
+                padding: 0;
+                border: none !important;
+            }
+        }
+        &.btn-appointment {
+            a {
+                justify-content: center;
+                @include responsive(sm-lg) {
+                    background-color: var(--wp--preset--color--maroon);
+                    border-color: var(--wp--preset--color--maroon);
+                    color: #fff;
+                }
+                @include responsive(xs) {
+                    color: var(--wp--preset--color--maroon);
+                }
+                @include responsive(xxs) {
+                    border: 1px solid !important;
+                    padding: 10px;
+                }
+            }
+            @include responsive(xxs) {
+                width: 100%;
+            }
+        }
+        &.btn-direction {
+            a {
+            }
+        }
+        &.btn-stock {
+            a {
+                border: none !important;
+                text-decoration: underline;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                .wpcf7-spinner {
+                    display: none;
+                    visibility: visible;
+                    margin: 0;
+                }
+                &.loading {
+                    .wpcf7-spinner {
+                        display: block;
+                    }
+                }
+            }
+        }
+        &:not(.btn-stock) {
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.request--appointment--dealer {
+    .form-control {
+        background-color: var(--wp--preset--color--lightgray-2);
+    }
+}
+
+.offcanvas-end---modal {
+    .offcanvas-body--inner {
+        overflow: auto;
+    }
+}
+.dealer--details {
+    .listings--posts {
+        display: block !important;
+    }
+}
+
+.specifications {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 40px;
+    .specification {
+        display: flex;
+        align-items: center;
+        width: calc(50% - 20px);
+        border-top: 1px solid;
+        padding: 10px 0;
+        justify-content: space-between;
+        gap: 20px;
+        @media(max-width: 991px) {
+            width: 100%;
+        }
+    }
+}
+
+
+#listing--details--results {
+    .listings--posts {
+        height: auto !important;
+    }
+}

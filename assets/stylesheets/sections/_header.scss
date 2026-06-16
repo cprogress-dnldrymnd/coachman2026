@@ -1,0 +1,174 @@
+#masthead {
+    z-index: 9999;
+    position: sticky;
+    top: var(--admin-bar-height);
+    @include transition(500ms);
+    &.header-transparent {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: var(--admin-bar-height);
+    }
+    &.header-default {
+        .svg-logo {
+            color: var(--logo-color);
+        }
+        .menu-burger .bar {
+            background-color: var(--bs-black);
+        }
+        & + #main {
+            margin-top: 0;
+        }
+    }
+}
+#main-header {
+    transition: 500ms;
+}
+body {
+    &.sticky--header {
+        #main-header {
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+        }
+        #masthead {
+            background-color: var(--bs-white);
+            .svg-logo {
+                color: var(--logo-color);
+            }
+            .menu-burger .bar {
+                background-color: var(--bs-black);
+            }
+        }
+    }
+}
+.menu-burger {
+    --burger-width: 40px;
+    --burger-height: 25px;
+    --bar-height: 3px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    position: relative;
+    color: currentColor;
+    outline: none;
+    height: var(--burger-height);
+    width: var(--burger-width);
+    .bar {
+        background-color: currentColor;
+        height: var(--bar-height);
+        width: var(--burger-width);
+        display: block;
+    }
+    @include responsive(xs-md) {
+        width: 30px;
+        height: 25px;
+    }
+    @include responsive(xs-sm) {
+        width: 25px;
+        height: 20px;
+    }
+}
+
+#offCanvasMenu {
+    border: none;
+    .container {
+        padding: 0 !important;
+    }
+    .listings-taxonomy-wrapper {
+        --bs-gutter-x: 3rem;
+        --bs-gutter-y: 3rem;
+    }
+    .listings--inner {
+        padding: 0 !important;
+        .logo-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            img {
+                height: 18px;
+                width: auto;
+                object-fit: contain;
+            }
+        }
+        .model-num {
+            display: inline-block !important;
+            background-color: var(--bs-white);
+            padding: 5px;
+            font-size: 13px;
+            svg {
+                display: none;
+            }
+        }
+    }
+    .listings-taxonomy-holder {
+        max-width: 230px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    @include responsive(md-lg) {
+        background-color: transparent;
+    }
+}
+.svg-logo.svg-logo {
+    svg {
+        width: 244px;
+    }
+}
+
+.header--navigation.header--navigation.header--navigation {
+    .nav-link {
+        @include responsive(xs) {
+            background-color: transparent !important;
+            @include after {
+                @include transition(300ms);
+            }
+            &.active {
+                background-color: var(--lightgray-2) !important;
+                & + .tab-pane {
+                    background-color: var(--lightgray-2) !important;
+                }
+                @include after {
+                    @include transform(rotate(90deg));
+                }
+            }
+            &:not(.active) {
+                & + .tab-pane {
+                    display: none;
+                }
+            }
+
+            & + .tab-pane {
+                padding: 20px;
+                .listings-taxonomy-wrapper {
+                    > div {
+                        flex: 0 0 auto;
+                        width: 50%;
+                    }
+                }
+            }
+        }
+    }
+}
+@include responsive(xs) {
+    #offCanvasMenu {
+        .offcanvas-body {
+            overflow: auto !important;
+        }
+        .listings-taxonomy-holder {
+            max-width: 100%;
+        }
+    }
+}
+
+@include responsive(sm-lg) {
+    .mega-menu--not-active.mega-menu--not-active.mega-menu--not-active {
+        .mega-menu--right {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .btn-close.btn-close {
+            left: 500px;
+            right: auto;
+        }
+    }
+}

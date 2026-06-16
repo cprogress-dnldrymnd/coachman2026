@@ -1,0 +1,215 @@
+body {
+    font-family: "pennypacker-semiwide", sans-serif;
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 1.4;
+    @include responsive(xs-sm) {
+        font-size: 18px;
+    }
+    @include responsive(xs) {
+        font-size: 16px;
+    }
+}
+
+@include headings {
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--black-color);
+}
+p {
+    font-weight: 300;
+}
+p:last-child {
+    margin-bottom: 0 !important;
+}
+a {
+    color: var(--bs-black);
+    @include on-event {
+        color: var(--maroon);
+    }
+}
+
+h1 {
+    font-size: 68px;
+    @include responsive(xs-sm) {
+        font-size: 56px;
+    }
+    @include responsive(xs) {
+        font-size: 48px;
+    }
+    @include responsive(mobile) {
+        font-size: 40px;
+    }
+}
+h2,
+.h2 {
+    font-size: 59px;
+    @include responsive(xs-md) {
+        font-size: 50px;
+    }
+    @include responsive(xs-sm) {
+        font-size: 40px;
+    }
+    @include responsive(xs) {
+        font-size: 30px;
+    }
+    @include responsive(mobile) {
+        font-size: 24px;
+    }
+}
+h3,
+.h3 {
+    font-size: 37px;
+    @include responsive(xs-md) {
+        font-size: 32px;
+    }
+    @include responsive(xs-sm) {
+        font-size: 30px;
+    }
+    @include responsive(xs) {
+        font-size: 27px;
+    }
+    @include responsive(mobile) {
+        font-size: 25px;
+    }
+}
+h4 {
+    font-size: 25px;
+}
+h5 {
+    font-size: 20px;
+}
+
+.font-sm {
+    font-size: 1rem;
+}
+.fs-48 {
+    font-size: 48px;
+    @include responsive(xs-sm) {
+        font-size: 36px;
+    }
+    @include responsive(xs) {
+        font-size: 32px;
+    }
+    @include responsive(mobile) {
+        font-size: 28px;
+    }
+}
+.fs-35 {
+    font-size: 35px;
+    @include responsive(xs-sm) {
+        font-size: 30px;
+    }
+    @include responsive(xs) {
+        font-size: 28px;
+    }
+    @include responsive(mobile) {
+        font-size: 24px;
+    }
+}
+
+.fs-32 {
+    font-size: 32px;
+    @include responsive(xs-sm) {
+        font-size: 28px;
+    }
+    @include responsive(xs) {
+        font-size: 26px;
+    }
+    @include responsive(mobile) {
+        font-size: 22px;
+    }
+}
+.fs-26 {
+    font-size: 26px;
+    @include responsive(xs-sm) {
+        font-size: 24px;
+    }
+    @include responsive(xs) {
+        font-size: 22px;
+    }
+    @include responsive(mobile) {
+        font-size: 20px;
+    }
+}
+.fs-25 {
+    font-size: 25;
+    @include responsive(xs-sm) {
+        font-size: 23px;
+    }
+    @include responsive(xs) {
+        font-size: 21px;
+    }
+    @include responsive(mobile) {
+        font-size: 19px;
+    }
+}
+.fs-24 {
+    font-size: 24px;
+    @include responsive(xs-sm) {
+        font-size: 22px;
+    }
+    @include responsive(xs) {
+        font-size: 20px;
+    }
+    @include responsive(mobile) {
+        font-size: 18px;
+    }
+}
+.fs-23 {
+    font-size: 23px;
+    @include responsive(xs-sm) {
+        font-size: 21px;
+    }
+    @include responsive(xs) {
+        font-size: 19px;
+    }
+    @include responsive(mobile) {
+        font-size: 17px;
+    }
+}
+.fs-22 {
+    font-size: 22px;
+    @include responsive(xs-sm) {
+        font-size: 21px;
+    }
+    @include responsive(xs) {
+        font-size: 19px;
+    }
+    @include responsive(mobile) {
+        font-size: 17px;
+    }
+}
+
+.fs-18 {
+    font-size: 18px;
+    @include responsive(xs) {
+        font-size: 17px;
+    }
+    @include responsive(mobile) {
+        font-size: 16px;
+    }
+}
+.fs-16 {
+    font-size: 16px;
+}
+.fs-15 {
+    font-size: 15px;
+}
+.fs-14 {
+    font-size: 14px;
+}
+.fs-13 {
+    font-size: 13px;
+}
+.fs-12 {
+    font-size: 12px;
+}
+.fs-7 {
+    font-size: 7px;
+}
+@include responsive(mobile) {
+    .fs-14-mobile {
+        font-size: 14px;
+    }
+}

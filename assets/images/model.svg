@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
+  <g id="Group_547" data-name="Group 547" transform="translate(-136 -932)">
+    <g id="caravan-trailer-svgrepo-com" transform="translate(141.408 942.3)">
+      <g id="Group_288" data-name="Group 288" transform="translate(0 0)">
+        <path id="Path_118" data-name="Path 118" d="M18.14,72.663H5.9A1.969,1.969,0,0,0,3.934,74.63v8.523H.656a.656.656,0,1,0,0,1.311H12.226a2.628,2.628,0,0,0,5.256,0h.657A1.969,1.969,0,0,0,20.107,82.5V74.63A1.969,1.969,0,0,0,18.14,72.663ZM10.49,83.153H7.868V76.6H10.49Zm4.364,2.6a1.318,1.318,0,1,1,1.318-1.318A1.32,1.32,0,0,1,14.855,85.751ZM18.8,79.22H14.861V76.6H18.8Z" transform="translate(0 -72.663)" fill="#202020"/>
+      </g>
+    </g>
+    <g id="Ellipse_3" data-name="Ellipse 3" transform="translate(136 932)" fill="none" stroke="#202020" stroke-width="2">
+      <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+      <circle cx="16.5" cy="16.5" r="15.5" fill="none"/>
+    </g>
+  </g>
+</svg>

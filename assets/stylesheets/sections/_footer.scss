@@ -1,0 +1,20 @@
+.bottom-footer {
+    .container {
+        > div {
+            border-top: 1px solid #d3d3d3;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+    }
+}
+
+.main-footer {
+    .wp-block-button__link {
+        &.has-maroon-background-color {
+            @include on-event {
+                color: var(--bs-white) !important;
+                background-color: var(--maroon) !important;
+            }
+        }
+    }
+}
