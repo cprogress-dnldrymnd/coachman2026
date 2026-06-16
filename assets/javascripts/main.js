@@ -175,7 +175,11 @@ function mega_menu() {
     });
 
     jQuery('#offCanvasMenu .nav-item:not(.no--submenu) .nav-link').click(function (e) {
-        jQuery('#offCanvasMenu').removeClass('mega-menu--not-active');
+        // Only reveal the mega panel on a real interaction (menu open), not the
+        // on-load auto-click that activates the first tab in listings().
+        if (jQuery('#offCanvasMenu').hasClass('show')) {
+            jQuery('#offCanvasMenu').removeClass('mega-menu--not-active');
+        }
         e.preventDefault();
     });
 
