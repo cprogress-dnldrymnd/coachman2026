@@ -119,7 +119,7 @@
 	 */
 	function registerServerBlock(name, opts) {
 		registerBlockType(name, {
-			apiVersion: 2,
+			apiVersion: 3,
 			title: opts.title,
 			category: CATEGORY,
 			icon: opts.icon || 'screenoptions',
@@ -155,7 +155,7 @@
 	 */
 	function registerContainerBlock(name, opts) {
 		registerBlockType(name, {
-			apiVersion: 2,
+			apiVersion: 3,
 			title: opts.title,
 			category: CATEGORY,
 			icon: opts.icon || 'layout',
@@ -209,7 +209,7 @@
 	 */
 	function registerPlaceholderBlock(name, opts) {
 		registerBlockType(name, {
-			apiVersion: 2,
+			apiVersion: 3,
 			title: opts.title,
 			category: CATEGORY,
 			icon: opts.icon || 'marker',

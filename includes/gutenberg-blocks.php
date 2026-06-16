@@ -118,7 +118,7 @@ function cm_register_blocks()
     cm_register_block_assets();
 
     $defaults = array(
-        'api_version'   => 2,
+        'api_version'   => 3,
         'editor_script' => 'coachman-blocks',
         'supports'      => array('html' => false),
         'category'      => 'coachman',

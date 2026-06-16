@@ -82,7 +82,7 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 
 ## Gutenberg Blocks (`coachman/*`)
 
-Registered in `includes/gutenberg-blocks.php` (loaded by `functions.php`); editor JS in `assets/javascripts/blocks.js` (handle `coachman-blocks`). These are editor-friendly replacements for the Carbon Fields `Block::make()` blocks in `post-meta.php`. **Both sets coexist**; new content should use `coachman/*`.
+Registered in `includes/gutenberg-blocks.php` (loaded by `functions.php`); editor JS in `assets/javascripts/blocks.js` (handle `coachman-blocks`). These are editor-friendly replacements for the Carbon Fields `Block::make()` blocks in `post-meta.php`. **Both sets coexist**; new content should use `coachman/*`. All blocks use **apiVersion 3** (set in the PHP `$defaults` array and each JS factory helper).
 
 PHP helper functions in `gutenberg-blocks.php`: `cm_block_classname($attributes)` (reads `className`), `cm_term_options($taxonomy)` (builds `{value, label}` option arrays for selectors), `cm_listing_models_posts($attributes)` (reshapes flat block attributes into the per-vehicle post structure).
 
@@ -93,7 +93,7 @@ PHP helper functions in `gutenberg-blocks.php`: `cm_block_classname($attributes)
 | `coachman/tabs-navigation` + `tabs-navigation-item` | InnerBlocks container | Optional Swiper mode; `tabs-navigation-item` has a `noSubmenu` toggle that adds `no--submenu` class to the `<li>` |
 | `coachman/tabs-content` + `tabs-content-item` | InnerBlocks container | |
 | `coachman/swiper` + `swiper-wrapper` + `swiper-slide` + `swiper-pagination` + `swiper-navigation` | InnerBlocks container | Full Swiper config via inspector; pagination/navigation presence is **auto-detected from child `WP_Block->inner_blocks`** in the PHP render callback — no manual flag needed; `swiper-pagination` and `swiper-navigation` each carry their own `style` attribute (Default / Style 2) set via a shared `swiperStyleInspector` panel |
-| `coachman/listing-models` | ServerSideRender | Multi-taxonomy model grid/swiper; term IDs selected in inspector; `displayModelLayouts` toggle expands inline model grids below |
+| `coachman/listing-models` | ServerSideRender | Multi-taxonomy model grid/swiper; model selection uses `FormTokenField` (searchable token UI) via `modelTokenField` helper in `blocks.js` — maps term IDs ↔ labels on the way in/out; `displayModelLayouts` toggle expands inline model grids below |
 | `coachman/listing-title`, `listing-feature`, `listing-buttons` | ServerSideRender | Use current post context |
 | `coachman/model-technical-details` | ServerSideRender | Off-canvas technical spec drawer; model selector lists caravan + motorhome terms only |
 | `coachman/partner` | ServerSideRender | Logo + website link (toggleable via `showLogo`/`showWebsite`); uses current post context |
