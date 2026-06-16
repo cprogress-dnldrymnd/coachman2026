@@ -156,6 +156,7 @@ function cm_register_blocks()
         'parent'          => array('coachman/tabs-navigation'),
         'attributes'      => array(
             'tabItemId' => array('type' => 'string', 'default' => ''),
+            'noSubmenu' => array('type' => 'boolean', 'default' => false),
         ),
         'render_callback' => 'cm_render_tabs_navigation_item',
     )));
@@ -340,11 +341,12 @@ function cm_render_tabs_navigation($attributes, $content)
 
 function cm_render_tabs_navigation_item($attributes, $content)
 {
-    $classname = cm_block_classname($attributes);
-    $item_id   = isset($attributes['tabItemId']) ? $attributes['tabItemId'] : '';
+    $classname   = cm_block_classname($attributes);
+    $item_id     = isset($attributes['tabItemId']) ? $attributes['tabItemId'] : '';
+    $no_submenu  = ! empty($attributes['noSubmenu']) ? 'no--submenu' : '';
 
     ob_start(); ?>
-    <li class="swiper-slide nav-item <?= esc_attr($classname) ?>" role="presentation">
+    <li class="swiper-slide nav-item <?= esc_attr($no_submenu) ?> <?= esc_attr($classname) ?>" role="presentation">
         <button class="nav-link" id="<?= esc_attr($item_id) ?>" data-bs-toggle="tab" data-bs-target="#<?= esc_attr($item_id) ?>-pane" type="button" role="tab" aria-controls="<?= esc_attr($item_id) ?>-pane">
             <?= $content ?>
         </button>

@@ -344,7 +344,8 @@
 		parent: ['coachman/tabs-navigation'],
 		allowedBlocks: ['core/paragraph', 'core/image'],
 		attributes: {
-			tabItemId: { type: 'string', default: '' }
+			tabItemId: { type: 'string', default: '' },
+			noSubmenu: { type: 'boolean', default: false }
 		},
 		inspector: function (props) {
 			var a = props.attributes;
@@ -356,6 +357,12 @@
 					label: __('Tab Item ID', 'glossop-caravans'),
 					value: a.tabItemId,
 					onChange: function (v) { set({ tabItemId: v }); }
+				}),
+				el(ToggleControl, {
+					label: __('No Submenu', 'glossop-caravans'),
+					help: __('Adds the "no--submenu" class to this item.', 'glossop-caravans'),
+					checked: !!a.noSubmenu,
+					onChange: function (v) { set({ noSubmenu: v }); }
 				})
 			);
 		}
