@@ -149,6 +149,12 @@ body {
         }
     }
 }
+
+@include responsive(md-lg) {
+    #offCanvasMenu {
+        background-color: transparent;
+    }
+}
 @include responsive(xs) {
     #offCanvasMenu {
         .offcanvas-body {

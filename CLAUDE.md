@@ -83,7 +83,7 @@ Registered in `includes/gutenberg-blocks.php` (loaded by `functions.php`); edito
 | Block | Type | Notes |
 |-------|------|-------|
 | `coachman/icon` | ServerSideRender | Media-library icon with color/size/alignment |
-| `coachman/video-gallery` | ServerSideRender | Queries `videos` CPT |
+| `coachman/video-gallery` | ServerSideRender | Queries `videos` CPT (registration commented out in `post-types.php` — block returns empty) |
 | `coachman/tabs-navigation` + `tabs-navigation-item` | InnerBlocks container | Optional Swiper mode; `tabs-navigation-item` has a `noSubmenu` toggle that adds `no--submenu` class to the `<li>` |
 | `coachman/tabs-content` + `tabs-content-item` | InnerBlocks container | |
 | `coachman/swiper` + `swiper-wrapper` + `swiper-slide` + `swiper-pagination` + `swiper-navigation` | InnerBlocks container | Full Swiper config via inspector |
