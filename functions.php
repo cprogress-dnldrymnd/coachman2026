@@ -15,6 +15,10 @@ define('vendor_dir', assets_dir . 'vendors/');
 function action_after_setup_theme()
 {
     add_theme_support('post-thumbnails');
+
+    // Load the compiled frontend stylesheet inside the block editor canvas (iframe).
+    add_theme_support('editor-styles');
+    add_editor_style('style.css');
 }
 add_action('after_setup_theme', 'action_after_setup_theme');
 

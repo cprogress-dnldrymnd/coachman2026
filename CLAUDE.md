@@ -69,6 +69,7 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 - SCSS partials under `assets/stylesheets/`: `utils/`, `base/`, `sections/`, `plugins/`
 - Bootstrap imported from `assets/vendors/bootstrap/scss/bootstrap`
 - Fonts: Adobe Typekit (`rlp0swo` kit), Proxima Nova as primary font family
+- `style.css` is also loaded inside the block editor canvas via `add_editor_style('style.css')` (editor-styles theme support enabled in `functions.php`)
 
 ## JavaScript
 
