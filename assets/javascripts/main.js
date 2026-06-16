@@ -179,6 +179,13 @@ function mega_menu() {
         e.preventDefault();
     });
 
+    var offCanvasMenu = document.getElementById('offCanvasMenu');
+    if (offCanvasMenu) {
+        offCanvasMenu.addEventListener('hidden.bs.offcanvas', function () {
+            jQuery('#offCanvasMenu').addClass('mega-menu--not-active');
+        });
+    }
+
     if (window.innerWidth < 768) {
         jQuery('.header--navigation .tab-pane').each(function (index, element) {
             $id = jQuery(this).attr('id');
