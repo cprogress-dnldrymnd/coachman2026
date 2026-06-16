@@ -84,6 +84,7 @@ require_once('includes/listing-functions.php');
 require_once('includes/hooks.php');
 require_once('includes/wpsl.php');
 require_once('includes/ajax.php');
+require_once('includes/gutenberg-blocks.php');
 
 
 
