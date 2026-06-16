@@ -173,8 +173,9 @@
 			category: CATEGORY,
 			icon: opts.icon || 'marker',
 			parent: opts.parent || undefined,
+			attributes: opts.attributes || {},
 			supports: { html: false },
-			edit: function () {
+			edit: function (props) {
 				var blockProps = useBlockProps({
 					style: {
 						border: '1px dashed #c3c4c7',
@@ -183,7 +184,13 @@
 						textAlign: 'center'
 					}
 				});
-				return el('div', blockProps, editorLabel(opts.title));
+				var inspector = opts.inspector ? opts.inspector(props) : null;
+				return el(
+					Fragment,
+					{},
+					inspector ? el(InspectorControls, {}, inspector) : null,
+					el('div', blockProps, editorLabel(opts.title))
+				);
 			},
 			save: function () {
 				return null;
@@ -435,10 +442,7 @@
 			autoplayDelay: { type: 'number', default: 3000 },
 			disableOnInteraction: { type: 'boolean', default: false },
 			spaceBetween: { type: 'string', default: '' },
-			slidesPerView: { type: 'string', default: '' },
-			hasPagination: { type: 'boolean', default: false },
-			hasNavigation: { type: 'boolean', default: false },
-			paginationStyle: { type: 'string', default: '' }
+			slidesPerView: { type: 'string', default: '' }
 		},
 		inspector: function (props) {
 			var a = props.attributes;
@@ -490,29 +494,6 @@
 							onChange: function (v) { set({ disableOnInteraction: v }); }
 						})
 						: null
-				),
-				el(
-					PanelBody,
-					{ title: __('Pagination & navigation', 'glossop-caravans'), initialOpen: false },
-					el(ToggleControl, {
-						label: __('Has pagination', 'glossop-caravans'),
-						checked: !!a.hasPagination,
-						onChange: function (v) { set({ hasPagination: v }); }
-					}),
-					el(ToggleControl, {
-						label: __('Has navigation', 'glossop-caravans'),
-						checked: !!a.hasNavigation,
-						onChange: function (v) { set({ hasNavigation: v }); }
-					}),
-					el(SelectControl, {
-						label: __('Pagination & navigation style', 'glossop-caravans'),
-						value: a.paginationStyle,
-						options: [
-							{ label: __('Default', 'glossop-caravans'), value: '' },
-							{ label: __('Style 2', 'glossop-caravans'), value: 'style-2' }
-						],
-						onChange: function (v) { set({ paginationStyle: v }); }
-					})
 				)
 			);
 		}
@@ -534,16 +515,41 @@
 		parent: ['coachman/swiper-wrapper']
 	});
 
+	// Shared "Pagination & navigation style" inspector for the pagination /
+	// navigation child blocks. The parent Swiper block reads this style off
+	// whichever child carries it.
+	function swiperStyleInspector(props) {
+		var a = props.attributes;
+		var set = props.setAttributes;
+		return el(
+			PanelBody,
+			{ title: __('Style', 'glossop-caravans'), initialOpen: true },
+			el(SelectControl, {
+				label: __('Pagination & navigation style', 'glossop-caravans'),
+				value: a.style,
+				options: [
+					{ label: __('Default', 'glossop-caravans'), value: '' },
+					{ label: __('Style 2', 'glossop-caravans'), value: 'style-2' }
+				],
+				onChange: function (v) { set({ style: v }); }
+			})
+		);
+	}
+
 	registerPlaceholderBlock('coachman/swiper-pagination', {
 		title: __('Swiper Pagination', 'glossop-caravans'),
 		icon: 'marker',
-		parent: ['coachman/swiper']
+		parent: ['coachman/swiper'],
+		attributes: { style: { type: 'string', default: '' } },
+		inspector: swiperStyleInspector
 	});
 
 	registerPlaceholderBlock('coachman/swiper-navigation', {
 		title: __('Swiper Navigation', 'glossop-caravans'),
 		icon: 'controls-forward',
-		parent: ['coachman/swiper']
+		parent: ['coachman/swiper'],
+		attributes: { style: { type: 'string', default: '' } },
+		inspector: swiperStyleInspector
 	});
 
 	/* ----------------------------------------------------------------- */

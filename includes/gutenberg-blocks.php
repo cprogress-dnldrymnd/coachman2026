@@ -186,9 +186,6 @@ function cm_register_blocks()
             'disableOnInteraction' => array('type' => 'boolean', 'default' => false),
             'spaceBetween'         => array('type' => 'string', 'default' => ''),
             'slidesPerView'        => array('type' => 'string', 'default' => ''),
-            'hasPagination'        => array('type' => 'boolean', 'default' => false),
-            'hasNavigation'        => array('type' => 'boolean', 'default' => false),
-            'paginationStyle'      => array('type' => 'string', 'default' => ''),
         ),
         'render_callback' => 'cm_render_swiper',
     )));
@@ -205,11 +202,17 @@ function cm_register_blocks()
 
     register_block_type('coachman/swiper-pagination', array_merge($defaults, array(
         'parent'          => array('coachman/swiper'),
+        'attributes'      => array(
+            'style' => array('type' => 'string', 'default' => ''),
+        ),
         'render_callback' => 'cm_render_swiper_pagination',
     )));
 
     register_block_type('coachman/swiper-navigation', array_merge($defaults, array(
         'parent'          => array('coachman/swiper'),
+        'attributes'      => array(
+            'style' => array('type' => 'string', 'default' => ''),
+        ),
         'render_callback' => 'cm_render_swiper_navigation',
     )));
 
@@ -379,11 +382,31 @@ function cm_render_tabs_content_item($attributes, $content)
     return ob_get_clean();
 }
 
-function cm_render_swiper($attributes, $content)
+function cm_render_swiper($attributes, $content, $block = null)
 {
     $classname = cm_block_classname($attributes);
     $swiper_id = isset($attributes['swiperId']) ? $attributes['swiperId'] : '';
-    $style     = isset($attributes['paginationStyle']) ? $attributes['paginationStyle'] : '';
+
+    // Pagination / navigation are auto-detected from the child blocks present;
+    // the pagination & navigation style is read off whichever child carries it.
+    $has_pagination = false;
+    $has_navigation = false;
+    $style          = '';
+
+    if ($block instanceof WP_Block && ! empty($block->inner_blocks)) {
+        foreach ($block->inner_blocks as $inner) {
+            if ($inner->name === 'coachman/swiper-pagination') {
+                $has_pagination = true;
+            } elseif ($inner->name === 'coachman/swiper-navigation') {
+                $has_navigation = true;
+            } else {
+                continue;
+            }
+            if ($style === '' && ! empty($inner->attributes['style'])) {
+                $style = $inner->attributes['style'];
+            }
+        }
+    }
 
     $atts = array();
 
@@ -399,13 +422,13 @@ function cm_render_swiper($attributes, $content)
     if (isset($attributes['slidesPerView']) && $attributes['slidesPerView'] !== '') {
         $atts['slidesPerView'] = $attributes['slidesPerView'];
     }
-    if (! empty($attributes['hasPagination'])) {
+    if ($has_pagination) {
         $atts['pagination'] = array(
             'el'        => '#' . $swiper_id . ' .swiper-pagination',
             'clickable' => 'true',
         );
     }
-    if (! empty($attributes['hasNavigation'])) {
+    if ($has_navigation) {
         $atts['navigation'] = array(
             'nextEl' => '#' . $swiper_id . ' .swiper-button-next',
             'prevEl' => '#' . $swiper_id . ' .swiper-button-prev',

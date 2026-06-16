@@ -76,6 +76,10 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 - `assets/javascripts/main.js` — frontend entry point; vendors loaded via `wp_enqueue_script` (jQuery, Bootstrap, Swiper, Fancybox); AJAX nonce localised as `ajax_params`
 - `assets/javascripts/blocks.js` — block editor only; build-less (uses global `wp.*` dependencies); localised as `window.coachmanBlocks` with taxonomy term lists for the selectors
 
+### Mega-menu / offcanvas gotcha
+
+`#offCanvasMenu` carries the class `mega-menu--not-active` by default. The class is stripped **only when the offcanvas already has the `show` class** (i.e. a real user interaction), not during the auto-click that activates the first listing tab. It is re-added on `hidden.bs.offcanvas`. Do not remove this guard — without it the mega panel reveals itself on page load.
+
 ## Gutenberg Blocks (`coachman/*`)
 
 Registered in `includes/gutenberg-blocks.php` (loaded by `functions.php`); editor JS in `assets/javascripts/blocks.js` (handle `coachman-blocks`). These are editor-friendly replacements for the Carbon Fields `Block::make()` blocks in `post-meta.php`. **Both sets coexist**; new content should use `coachman/*`.
