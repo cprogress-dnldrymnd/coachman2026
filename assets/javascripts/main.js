@@ -82,11 +82,20 @@ function ajax_details() {
     }
 }
 
+function setHeaderHeight() {
+    jQuery('body').css('--header-height', jQuery('#masthead').outerHeight() + 'px');
+}
+
 function updateScrollStatus() {
-    if (jQuery(window).scrollTop() === 0) {
-        jQuery('body').removeClass('sticky--header');
-    } else {
-        jQuery('body').addClass('sticky--header');
+    var wasSticky = jQuery('body').hasClass('sticky--header');
+    var isSticky = jQuery(window).scrollTop() !== 0;
+
+    jQuery('body').toggleClass('sticky--header', isSticky);
+
+    // The sticky state shrinks #main-header's padding behind a 500ms transition,
+    // so re-measure --header-height once that transition has settled.
+    if (isSticky !== wasSticky) {
+        setTimeout(setHeaderHeight, 500);
     }
 }
 
@@ -162,9 +171,8 @@ function search_stock() {
     });
 }
 function mega_menu() {
-    $height = jQuery('#masthead').outerHeight();
     $admin_bar = jQuery('#wpadminbar').outerHeight();
-    jQuery('body').css('--header-height', $height + 'px');
+    setHeaderHeight();
     if (jQuery('#wpadminbar').length > 0) {
         jQuery('body').css('--admin-bar-height', $admin_bar + 'px');
 
