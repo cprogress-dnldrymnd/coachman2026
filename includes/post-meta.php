@@ -729,6 +729,7 @@ Block::make(__('Partner'))
 Container::make('term_meta', __('Model Properties'))
     ->where('term_taxonomy', '=', 'caravan_model')
     ->or_where('term_taxonomy', '=', 'motorhome_model')
+    ->or_where('term_taxonomy', '=', 'campervan_model')
     ->add_fields(array(
         Field::make('image', 'logo', __('Logo')),
         Field::make('image', 'image', __('Image')),
