@@ -76,6 +76,10 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 - `assets/javascripts/main.js` — frontend entry point; vendors loaded via `wp_enqueue_script` (jQuery, Bootstrap, Swiper, Fancybox); AJAX nonce localised as `ajax_params`
 - `assets/javascripts/blocks.js` — block editor only; build-less (uses global `wp.*` dependencies); localised as `window.coachmanBlocks` with taxonomy term lists for the selectors. Uses three factory helpers to reduce boilerplate: `registerServerBlock` (SSR leaf blocks), `registerContainerBlock` (InnerBlocks wrappers), `registerPlaceholderBlock` (child blocks with no save markup, e.g. swiper-pagination/navigation — supports optional `inspector` option for per-block settings).
 
+### Sticky header / `--header-height`
+
+`setHeaderHeight()` sets `--header-height` on `<body>` from `#masthead`'s measured height. `updateScrollStatus()` toggles `sticky--header` on scroll and **re-measures after 500 ms** whenever the sticky state changes, because the sticky transition shrinks the header's padding over 500 ms. `.sticky-element` uses `top: calc(var(--header-height, 75px) + var(--admin-bar-height, 0px))`. Do not call `setHeaderHeight()` synchronously after toggling the sticky class — the transition hasn't settled yet.
+
 ### Mega-menu / offcanvas gotcha
 
 `#offCanvasMenu` carries the class `mega-menu--not-active` by default. The class is stripped **only when the offcanvas already has the `show` class** (i.e. a real user interaction), not during the auto-click that activates the first listing tab. It is re-added on `hidden.bs.offcanvas`. Do not remove this guard — without it the mega panel reveals itself on page load.

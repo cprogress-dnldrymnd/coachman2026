@@ -89,6 +89,7 @@ require_once('includes/hooks.php');
 require_once('includes/wpsl.php');
 require_once('includes/ajax.php');
 require_once('includes/gutenberg-blocks.php');
+require_once('includes/block-migration.php');
 
 
 
