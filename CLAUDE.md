@@ -74,7 +74,7 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 ## JavaScript
 
 - `assets/javascripts/main.js` — frontend entry point; vendors loaded via `wp_enqueue_script` (jQuery, Bootstrap, Swiper, Fancybox); AJAX nonce localised as `ajax_params`
-- `assets/javascripts/blocks.js` — block editor only; build-less (uses global `wp.*` dependencies); localised as `window.coachmanBlocks` with taxonomy term lists for the selectors
+- `assets/javascripts/blocks.js` — block editor only; build-less (uses global `wp.*` dependencies); localised as `window.coachmanBlocks` with taxonomy term lists for the selectors. Uses three factory helpers to reduce boilerplate: `registerServerBlock` (SSR leaf blocks), `registerContainerBlock` (InnerBlocks wrappers), `registerPlaceholderBlock` (child blocks with no save markup, e.g. swiper-pagination/navigation — supports optional `inspector` option for per-block settings).
 
 ### Mega-menu / offcanvas gotcha
 
@@ -84,17 +84,19 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 
 Registered in `includes/gutenberg-blocks.php` (loaded by `functions.php`); editor JS in `assets/javascripts/blocks.js` (handle `coachman-blocks`). These are editor-friendly replacements for the Carbon Fields `Block::make()` blocks in `post-meta.php`. **Both sets coexist**; new content should use `coachman/*`.
 
+PHP helper functions in `gutenberg-blocks.php`: `cm_block_classname($attributes)` (reads `className`), `cm_term_options($taxonomy)` (builds `{value, label}` option arrays for selectors), `cm_listing_models_posts($attributes)` (reshapes flat block attributes into the per-vehicle post structure).
+
 | Block | Type | Notes |
 |-------|------|-------|
 | `coachman/icon` | ServerSideRender | Media-library icon with color/size/alignment |
 | `coachman/video-gallery` | ServerSideRender | Queries `videos` CPT (registration commented out in `post-types.php` — block returns empty) |
 | `coachman/tabs-navigation` + `tabs-navigation-item` | InnerBlocks container | Optional Swiper mode; `tabs-navigation-item` has a `noSubmenu` toggle that adds `no--submenu` class to the `<li>` |
 | `coachman/tabs-content` + `tabs-content-item` | InnerBlocks container | |
-| `coachman/swiper` + `swiper-wrapper` + `swiper-slide` + `swiper-pagination` + `swiper-navigation` | InnerBlocks container | Full Swiper config via inspector |
-| `coachman/listing-models` | ServerSideRender | Multi-taxonomy model grid/swiper; term IDs selected in inspector |
+| `coachman/swiper` + `swiper-wrapper` + `swiper-slide` + `swiper-pagination` + `swiper-navigation` | InnerBlocks container | Full Swiper config via inspector; pagination/navigation presence is **auto-detected from child `WP_Block->inner_blocks`** in the PHP render callback — no manual flag needed; `swiper-pagination` and `swiper-navigation` each carry their own `style` attribute (Default / Style 2) set via a shared `swiperStyleInspector` panel |
+| `coachman/listing-models` | ServerSideRender | Multi-taxonomy model grid/swiper; term IDs selected in inspector; `displayModelLayouts` toggle expands inline model grids below |
 | `coachman/listing-title`, `listing-feature`, `listing-buttons` | ServerSideRender | Use current post context |
-| `coachman/model-technical-details` | ServerSideRender | Off-canvas technical spec drawer |
-| `coachman/partner` | ServerSideRender | Logo + website link; uses current post context |
+| `coachman/model-technical-details` | ServerSideRender | Off-canvas technical spec drawer; model selector lists caravan + motorhome terms only |
+| `coachman/partner` | ServerSideRender | Logo + website link (toggleable via `showLogo`/`showWebsite`); uses current post context |
 | `coachman/event-date` | ServerSideRender | Uses `event_date`/`event_end_date` meta |
 
 All blocks are grouped under the **Coachman** inserter category.

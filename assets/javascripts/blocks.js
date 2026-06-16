@@ -28,6 +28,7 @@
 	var TextControl = components.TextControl;
 	var ToggleControl = components.ToggleControl;
 	var SelectControl = components.SelectControl;
+	var FormTokenField = components.FormTokenField;
 	var ColorPalette = components.ColorPalette;
 	var Button = components.Button;
 
@@ -69,6 +70,46 @@
 			},
 			text
 		);
+	}
+
+	/**
+	 * Searchable, token-based multi-select for taxonomy models.
+	 *
+	 * The block attribute stores an array of string term IDs, but FormTokenField
+	 * works in display labels, so we map IDs <-> labels on the way in and out.
+	 * Free-typed tokens that don't match a known model are discarded.
+	 *
+	 * options: [ { value: '12', label: 'Acadia' }, ... ]
+	 * selectedIds: array of string term IDs
+	 */
+	function modelTokenField(label, options, selectedIds, onChange) {
+		var labelByValue = {};
+		var valueByLabel = {};
+		options.forEach(function (o) {
+			labelByValue[o.value] = o.label;
+			valueByLabel[o.label] = o.value;
+		});
+
+		var selectedLabels = (selectedIds || []).map(function (id) {
+			return labelByValue[id] || String(id);
+		});
+
+		return el(FormTokenField, {
+			label: label,
+			value: selectedLabels,
+			suggestions: options.map(function (o) { return o.label; }),
+			__experimentalExpandOnFocus: true,
+			__experimentalShowHowTo: false,
+			onChange: function (tokens) {
+				var ids = [];
+				tokens.forEach(function (t) {
+					if (valueByLabel.hasOwnProperty(t)) {
+						ids.push(valueByLabel[t]);
+					}
+				});
+				onChange(ids);
+			}
+		});
 	}
 
 	/**
@@ -582,29 +623,26 @@
 					checked: !!a.displayModelLayouts,
 					onChange: function (v) { set({ displayModelLayouts: v }); }
 				}),
-				el(SelectControl, {
-					label: __('Caravan models', 'glossop-caravans'),
-					multiple: true,
-					value: a.caravanModels,
-					options: caravanModels,
-					onChange: function (v) { set({ caravanModels: v }); }
-				}),
-				el(SelectControl, {
-					label: __('Motorhome models', 'glossop-caravans'),
-					multiple: true,
-					value: a.motorhomeModels,
-					options: motorhomeModels,
-					onChange: function (v) { set({ motorhomeModels: v }); }
-				}),
-				el(SelectControl, {
-					label: __('Campervan models', 'glossop-caravans'),
-					multiple: true,
-					value: a.campervanModels,
-					options: campervanModels,
-					onChange: function (v) { set({ campervanModels: v }); }
-				}),
+				modelTokenField(
+					__('Caravan models', 'glossop-caravans'),
+					caravanModels,
+					a.caravanModels,
+					function (v) { set({ caravanModels: v }); }
+				),
+				modelTokenField(
+					__('Motorhome models', 'glossop-caravans'),
+					motorhomeModels,
+					a.motorhomeModels,
+					function (v) { set({ motorhomeModels: v }); }
+				),
+				modelTokenField(
+					__('Campervan models', 'glossop-caravans'),
+					campervanModels,
+					a.campervanModels,
+					function (v) { set({ campervanModels: v }); }
+				),
 				el('p', { style: { fontSize: '11px', color: '#757575' } },
-					__('Tip: hold Ctrl / Cmd to select multiple models.', 'glossop-caravans'))
+					__('Type to search, then click a model to add it. Click ✕ on a tag to remove.', 'glossop-caravans'))
 			);
 		}
 	});
