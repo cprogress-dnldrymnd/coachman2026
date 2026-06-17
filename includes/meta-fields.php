@@ -9,31 +9,34 @@
  * with get__post_meta() / get__term_meta() / get__theme_option().
  *
  * Storage formats (match the theme's readers):
- *   - simple fields  -> `_{name}` plain scalar          (text, textarea, select,
- *                                                          number, url, oembed,
- *                                                          date, rich_text)
- *   - image / file   -> `_{name}` attachment ID (int)
- *   - association    -> `_{name}` array of post IDs (int)
- *   - complex        -> `_{name}` array of rows (WP serialises); rows may nest
+ * - simple fields  -> `_{name}` plain scalar          (text, textarea, select,
+ * number, url, oembed,
+ * date, rich_text)
+ * - image / file   -> `_{name}` attachment ID (int)
+ * - gallery        -> `_{name}` array of attachment IDs (int)
+ * - association    -> `_{name}` array of post IDs (int)
+ * - complex        -> `_{name}` array of rows (WP serialises); rows may nest
  *
  * Field definition array:
- *   [
- *     'type'      => 'text|textarea|number|url|select|rich_text|oembed|image|
- *                     file|date|association|complex',
- *     'name'      => 'price',              // stored at _price
- *     'label'     => 'Price',
- *     'width'     => 25,                   // optional layout hint (percent)
- *     'desc'      => 'help text',          // optional
- *     'options'   => ['v' => 'Label'],     // select
- *     'post_type' => 'page',               // association target
- *     'max'       => 1,                    // association max selections
- *     'mime'      => 'application/pdf',     // file accept filter
- *     'fields'    => [ ...subfields ],     // complex
- *     'header'    => 'listing_name',       // complex: subfield shown in row head
- *     'button'    => 'Add row',            // complex: add-row button label
- *   ]
+ * [
+ * 'type'      => 'text|textarea|number|url|select|rich_text|oembed|image|
+ * file|gallery|date|association|complex',
+ * 'name'      => 'price',              // stored at _price
+ * 'label'     => 'Price',
+ * 'width'     => 25,                   // optional layout hint (percent)
+ * 'desc'      => 'help text',          // optional
+ * 'options'   => ['v' => 'Label'],     // select
+ * 'post_type' => 'page',               // association target
+ * 'max'       => 1,                    // association max selections
+ * 'mime'      => 'application/pdf',    // file accept filter
+ * 'fields'    => [ ...subfields ],     // complex
+ * 'header'    => 'listing_name',       // complex: subfield shown in row head
+ * 'button'    => 'Add row',            // complex: add-row button label
+ * ]
  *
  * @package Coachman
+ * @author  Digitally Disruptive - Donald Raymundo
+ * @link    https://digitallydisruptive.co.uk/
  */
 
 if (! defined('ABSPATH')) {
@@ -55,21 +58,27 @@ final class CM_Meta
     /** @var array<int,array> Options pages. */
     public static $options_pages = array();
 
-    /** Register a post meta box. */
+    /** * Register a post meta box. 
+     * * @param array $args The arguments for registering the meta box.
+     */
     public static function add_box(array $args)
     {
         $args += array('id' => '', 'title' => '', 'screen' => 'post', 'context' => 'normal', 'priority' => 'default', 'fields' => array());
         self::$boxes[] = $args;
     }
 
-    /** Register a term meta box (one or more taxonomies). */
+    /** * Register a term meta box (one or more taxonomies). 
+     * * @param array $args The arguments for registering the term meta box.
+     */
     public static function add_term_box(array $args)
     {
         $args += array('id' => '', 'title' => '', 'taxonomies' => array(), 'fields' => array());
         self::$term_boxes[] = $args;
     }
 
-    /** Register a theme options page (optionally nested under $parent). */
+    /** * Register a theme options page (optionally nested under $parent). 
+     * * @param array $args The arguments for registering the options page.
+     */
     public static function add_options_page(array $args)
     {
         $args += array('id' => '', 'title' => '', 'menu_title' => '', 'parent' => null, 'capability' => 'manage_options', 'fields' => array());
@@ -79,7 +88,10 @@ final class CM_Meta
         self::$options_pages[] = $args;
     }
 
-    /** Flatten the field list for a screen, recursing is NOT needed (top level only saves). */
+    /** * Flatten the field list for a screen, recursing is NOT needed (top level only saves). 
+     * * @param string $post_type The post type to retrieve boxes for.
+     * @return array Array of registered boxes for the given screen.
+     */
     public static function boxes_for_post_type($post_type)
     {
         $out = array();
@@ -103,7 +115,8 @@ add_action('admin_menu', 'cm_meta_register_options_pages');
 add_action('admin_enqueue_scripts', 'cm_meta_admin_assets');
 add_action('init', 'cm_meta_register_term_boxes', 20);
 
-/** Wire term add/edit form + save hooks once taxonomies exist. */
+/** * Wire term add/edit form + save hooks once taxonomies exist. 
+ */
 function cm_meta_register_term_boxes()
 {
     foreach (CM_Meta::$term_boxes as $box) {
@@ -120,6 +133,11 @@ function cm_meta_register_term_boxes()
 /* Post meta boxes                                                            */
 /* ========================================================================== */
 
+/**
+ * Registers meta boxes for the current post type.
+ *
+ * @param string $post_type Current post type.
+ */
 function cm_meta_register_post_boxes($post_type)
 {
     foreach (CM_Meta::boxes_for_post_type($post_type) as $box) {
@@ -135,6 +153,12 @@ function cm_meta_register_post_boxes($post_type)
     }
 }
 
+/**
+ * Renders the HTML inside a post meta box.
+ *
+ * @param WP_Post $post    The post object.
+ * @param array   $metabox Metabox arguments.
+ */
 function cm_meta_render_post_box($post, $metabox)
 {
     $box = $metabox['args']['box'];
@@ -143,6 +167,12 @@ function cm_meta_render_post_box($post, $metabox)
     echo cm_meta_render_fields($box['fields'], 'cm_meta', $values);
 }
 
+/**
+ * Handles saving post meta data on the 'save_post' hook.
+ *
+ * @param int     $post_id Post ID.
+ * @param WP_Post $post    Post object.
+ */
 function cm_meta_save_post($post_id, $post)
 {
     if (! isset($_POST['cm_meta_nonce']) || ! wp_verify_nonce($_POST['cm_meta_nonce'], 'cm_meta_save')) {
@@ -169,7 +199,11 @@ function cm_meta_save_post($post_id, $post)
 /* Term meta boxes                                                            */
 /* ========================================================================== */
 
-/** Return the term box whose taxonomies include $taxonomy. */
+/** * Return the term box whose taxonomies include $taxonomy. 
+ *
+ * @param string $taxonomy Taxonomy slug.
+ * @return array|null The box array or null if none found.
+ */
 function cm_meta_term_box_for($taxonomy)
 {
     foreach (CM_Meta::$term_boxes as $box) {
@@ -180,7 +214,10 @@ function cm_meta_term_box_for($taxonomy)
     return null;
 }
 
-/** Add-new-term screen (stacked divs, no existing values). */
+/** * Add-new-term screen (stacked divs, no existing values). 
+ *
+ * @param string $taxonomy Taxonomy slug.
+ */
 function cm_meta_term_add_fields($taxonomy)
 {
     $box = cm_meta_term_box_for($taxonomy);
@@ -193,7 +230,11 @@ function cm_meta_term_add_fields($taxonomy)
     echo '</div></div>';
 }
 
-/** Edit-term screen (table rows). */
+/** * Edit-term screen (table rows). 
+ *
+ * @param WP_Term $term     Term object.
+ * @param string  $taxonomy Taxonomy slug.
+ */
 function cm_meta_term_edit_fields($term, $taxonomy)
 {
     $box = cm_meta_term_box_for($taxonomy);
@@ -211,6 +252,11 @@ function cm_meta_term_edit_fields($term, $taxonomy)
     echo '</div></td></tr>';
 }
 
+/**
+ * Handles saving term meta data.
+ *
+ * @param int $term_id Term ID.
+ */
 function cm_meta_save_term($term_id)
 {
     if (! isset($_POST['cm_meta_nonce']) || ! wp_verify_nonce($_POST['cm_meta_nonce'], 'cm_meta_save')) {
@@ -235,6 +281,9 @@ function cm_meta_save_term($term_id)
 /* Options pages                                                              */
 /* ========================================================================== */
 
+/**
+ * Registers administrative option pages.
+ */
 function cm_meta_register_options_pages()
 {
     foreach (CM_Meta::$options_pages as $page) {
@@ -249,6 +298,11 @@ function cm_meta_register_options_pages()
     }
 }
 
+/**
+ * Renders the HTML structure for a given options page.
+ *
+ * @param array $page Options page configuration array.
+ */
 function cm_meta_render_options_page($page)
 {
     if (! current_user_can($page['capability'])) {
@@ -280,7 +334,13 @@ function cm_meta_render_options_page($page)
 /* Value loading                                                              */
 /* ========================================================================== */
 
-/** Read stored value for a single field from the right backend. */
+/** * Read stored value for a single field from the right backend. 
+ *
+ * @param string $name      Field name.
+ * @param string $context   Context ('post', 'term', 'option').
+ * @param int    $object_id Object ID.
+ * @return mixed The stored value.
+ */
 function cm_meta_get_value($name, $context, $object_id)
 {
     $key = '_' . $name;
@@ -295,7 +355,13 @@ function cm_meta_get_value($name, $context, $object_id)
     return '';
 }
 
-/** Build a [name => value] map for a field list (top level only). */
+/** * Build a [name => value] map for a field list (top level only). 
+ *
+ * @param array  $fields    Array of field configurations.
+ * @param string $context   Context ('post', 'term', 'option').
+ * @param int    $object_id Object ID.
+ * @return array Mapped field values.
+ */
 function cm_meta_collect_values($fields, $context, $object_id)
 {
     $values = array();
@@ -312,7 +378,13 @@ function cm_meta_collect_values($fields, $context, $object_id)
 /* Saving / sanitising                                                        */
 /* ========================================================================== */
 
-/** Sanitise + persist every top-level field from the raw $_POST['cm_meta']. */
+/** * Sanitise + persist every top-level field from the raw $_POST['cm_meta']. 
+ *
+ * @param array  $fields    Field configurations.
+ * @param array  $raw       Raw posted data.
+ * @param string $context   Storage context.
+ * @param int    $object_id Object ID.
+ */
 function cm_meta_save_fields($fields, $raw, $context, $object_id)
 {
     foreach ($fields as $field) {
@@ -326,7 +398,13 @@ function cm_meta_save_fields($fields, $raw, $context, $object_id)
     }
 }
 
-/** Write (or delete when empty) one field's value to the right backend. */
+/** * Write (or delete when empty) one field's value to the right backend. 
+ *
+ * @param string $name      Field name.
+ * @param mixed  $clean     Sanitized value.
+ * @param string $context   Storage context.
+ * @param int    $object_id Object ID.
+ */
 function cm_meta_persist($name, $clean, $context, $object_id)
 {
     $key   = '_' . $name;
@@ -357,7 +435,12 @@ function cm_meta_persist($name, $clean, $context, $object_id)
     }
 }
 
-/** Recursively sanitise a single field's raw value. */
+/** * Recursively sanitise a single field's raw value. 
+ *
+ * @param array $field Field configuration.
+ * @param mixed $value Raw value.
+ * @return mixed Sanitized value.
+ */
 function cm_meta_sanitize_field($field, $value)
 {
     $type = isset($field['type']) ? $field['type'] : 'text';
@@ -384,6 +467,10 @@ function cm_meta_sanitize_field($field, $value)
         case 'image':
         case 'file':
             return ($value === '' || $value === null) ? '' : (int) $value;
+            
+        case 'gallery':
+            $ids = is_scalar($value) ? explode(',', (string) $value) : (array) $value;
+            return array_values(array_filter(array_map('intval', $ids)));
 
         case 'date':
             return is_scalar($value) ? sanitize_text_field((string) $value) : '';
@@ -406,7 +493,12 @@ function cm_meta_sanitize_field($field, $value)
     }
 }
 
-/** Sanitise a repeater value: array of rows, each row a map of subfields. */
+/** * Sanitise a repeater value: array of rows, each row a map of subfields. 
+ *
+ * @param array $field Field configuration.
+ * @param mixed $value Raw repeater value.
+ * @return array Sanitized array of rows.
+ */
 function cm_meta_sanitize_complex($field, $value)
 {
     if (! is_array($value)) {
@@ -434,7 +526,11 @@ function cm_meta_sanitize_complex($field, $value)
     return array_values($rows);
 }
 
-/** True when any leaf in a sanitised row holds a non-empty value. */
+/** * True when any leaf in a sanitised row holds a non-empty value. 
+ *
+ * @param array $row A parsed row structure.
+ * @return bool
+ */
 function cm_meta_row_has_content($row)
 {
     foreach ($row as $v) {
@@ -459,6 +555,7 @@ function cm_meta_row_has_content($row)
  * @param array  $fields
  * @param string $base    Form-name base, e.g. "cm_meta" or "cm_meta[stocks][0]".
  * @param array  $values  [name => value] for this level.
+ * @return string HTML output.
  */
 function cm_meta_render_fields($fields, $base, $values)
 {
@@ -470,7 +567,13 @@ function cm_meta_render_fields($fields, $base, $values)
     return $html;
 }
 
-/** Render one field wrapped in its layout cell. */
+/** * Render one field wrapped in its layout cell. 
+ *
+ * @param array  $field Field configuration.
+ * @param string $base  Form-name base string.
+ * @param mixed  $value Current field value.
+ * @return string HTML output.
+ */
 function cm_meta_render_field($field, $base, $value)
 {
     $type  = isset($field['type']) ? $field['type'] : 'text';
@@ -499,7 +602,14 @@ function cm_meta_render_field($field, $base, $value)
     return $html;
 }
 
-/** Render the input control for a field type. */
+/** * Render the input control for a field type. 
+ *
+ * @param array  $field Field configuration.
+ * @param string $input Field input name attribute.
+ * @param string $id    Field input ID attribute.
+ * @param mixed  $value Field value.
+ * @return string HTML output.
+ */
 function cm_meta_render_input($field, $input, $id, $value)
 {
     $type = isset($field['type']) ? $field['type'] : 'text';
@@ -528,6 +638,9 @@ function cm_meta_render_input($field, $input, $id, $value)
         case 'image':
         case 'file':
             return cm_meta_render_media($field, $input, $id, $value);
+            
+        case 'gallery':
+            return cm_meta_render_gallery($field, $input, $id, $value);
 
         case 'association':
             return cm_meta_render_association($field, $input, $id, $value);
@@ -542,6 +655,15 @@ function cm_meta_render_input($field, $input, $id, $value)
     }
 }
 
+/**
+ * Render select dropdown structure.
+ *
+ * @param array  $field Field configuration.
+ * @param string $input Field input name attribute.
+ * @param string $id    Field input ID attribute.
+ * @param mixed  $value Field value.
+ * @return string HTML output.
+ */
 function cm_meta_render_select($field, $input, $id, $value)
 {
     $options = isset($field['options']) ? $field['options'] : array();
@@ -559,6 +681,15 @@ function cm_meta_render_select($field, $input, $id, $value)
     return $html;
 }
 
+/**
+ * Render an individual media picker (image or file).
+ *
+ * @param array  $field Field configuration.
+ * @param string $input Field input name attribute.
+ * @param string $id    Field input ID attribute.
+ * @param mixed  $value Field value.
+ * @return string HTML output.
+ */
 function cm_meta_render_media($field, $input, $id, $value)
 {
     $is_image    = (isset($field['type']) && $field['type'] === 'image');
@@ -584,6 +715,54 @@ function cm_meta_render_media($field, $input, $id, $value)
     return $html;
 }
 
+/**
+ * Render a native gallery field for selecting multiple images simultaneously.
+ * Retrieves an array of image attachments and outputs preview elements inline.
+ *
+ * @param array  $field Field configuration.
+ * @param string $input Field input name attribute.
+ * @param string $id    Field input ID attribute.
+ * @param mixed  $value Saved Array of attachment IDs.
+ * @return string HTML output.
+ */
+function cm_meta_render_gallery($field, $input, $id, $value)
+{
+    $ids        = is_array($value) ? $value : array();
+    $ids_string = implode(',', $ids);
+
+    $html  = '<div class="cm-media cm-gallery" data-type="gallery">';
+    $html .= '<input type="hidden" class="cm-gallery-ids" id="' . esc_attr($id) . '" name="' . esc_attr($input) . '" value="' . esc_attr($ids_string) . '">';
+    $html .= '<div class="cm-gallery-preview" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">';
+
+    foreach ($ids as $att_id) {
+        if ($att_id > 0) {
+            $img = wp_get_attachment_image($att_id, 'thumbnail', false, array('style' => 'max-width:80px; height:auto; border:1px solid #ddd;'));
+            if ($img) {
+                $html .= '<div class="cm-gallery-item" data-id="' . esc_attr((string) $att_id) . '" style="position:relative; display:inline-block;">';
+                $html .= $img;
+                $html .= '<button type="button" class="cm-gallery-remove-item" style="position:absolute; top:-5px; right:-5px; background:#d63638; color:#fff; border:none; border-radius:50%; cursor:pointer; width:20px; height:20px; line-height:1; padding:0;" title="' . esc_attr__('Remove image', 'glossop-caravans') . '">&times;</button>';
+                $html .= '</div>';
+            }
+        }
+    }
+
+    $html .= '</div>';
+    $html .= '<button type="button" class="button cm-gallery-select">' . esc_html__('Manage Gallery', 'glossop-caravans') . '</button> ';
+    $html .= '<button type="button" class="button cm-gallery-clear"' . (empty($ids) ? ' style="display:none"' : '') . '>' . esc_html__('Clear Gallery', 'glossop-caravans') . '</button>';
+    $html .= '</div>';
+
+    return $html;
+}
+
+/**
+ * Render post association selector.
+ *
+ * @param array  $field Field configuration.
+ * @param string $input Field input name attribute.
+ * @param string $id    Field input ID attribute.
+ * @param mixed  $value Field value.
+ * @return string HTML output.
+ */
 function cm_meta_render_association($field, $input, $id, $value)
 {
     $post_type = isset($field['post_type']) ? $field['post_type'] : 'post';
@@ -635,6 +814,11 @@ function cm_meta_render_association($field, $input, $id, $value)
  * prototype (with a {{token}} index placeholder unique to this repeater path)
  * drives client-side "add row". Nesting works because each level's token is a
  * distinct path string (e.g. "stocks" vs "stocks.years").
+ *
+ * @param array  $field Field configuration.
+ * @param string $input Field input name attribute.
+ * @param mixed  $value Array of row configurations.
+ * @return string HTML output.
  */
 function cm_meta_render_complex($field, $input, $value)
 {
@@ -668,7 +852,15 @@ function cm_meta_render_complex($field, $input, $value)
     return $html;
 }
 
-/** Render a single repeater row at $index for base $input (e.g. cm_meta[stocks]). */
+/** * Render a single repeater row at $index for base $input (e.g. cm_meta[stocks]). 
+ *
+ * @param array  $subfields    Repeater subfields definition.
+ * @param string $input        Base input string.
+ * @param string $index        Current row index constraint.
+ * @param array  $row          Current row values.
+ * @param string $header_field Name of the subfield to use as the row header label.
+ * @return string HTML markup for the row segment.
+ */
 function cm_meta_render_complex_row($subfields, $input, $index, $row, $header_field)
 {
     $row_base = $input . '[' . $index . ']';
@@ -690,6 +882,11 @@ function cm_meta_render_complex_row($subfields, $input, $index, $row, $header_fi
 /* Admin assets                                                               */
 /* ========================================================================== */
 
+/**
+ * Enqueue scripts and styles necessary for meta framework operations.
+ *
+ * @param string $hook Page hook indicator.
+ */
 function cm_meta_admin_assets($hook)
 {
     // Post/term edit screens, plus our options pages (hooks like

@@ -9,6 +9,8 @@
  * get__post_meta() / get__term_meta() / get__theme_option().
  *
  * @package Coachman
+ * @author  Digitally Disruptive - Donald Raymundo
+ * @link    https://digitallydisruptive.co.uk/
  */
 
 if (! defined('ABSPATH')) {
@@ -79,6 +81,25 @@ CM_Meta::add_box(array(
                 'header-default'     => 'Default',
                 'header-transparent' => 'Transparent',
             ),
+        ),
+    ),
+));
+
+/* -------------------------------------------------------------------------- */
+/* Vehicle Gallery                                                            */
+/* -------------------------------------------------------------------------- */
+
+CM_Meta::add_box(array(
+    'id'      => 'vehicle_gallery',
+    'title'   => __('Vehicle Gallery', 'glossop-caravans'),
+    'screen'  => array('caravan', 'motorhome', 'campervan'),
+    'context' => 'normal',
+    'fields'  => array(
+        array(
+            'type'  => 'gallery',
+            'name'  => 'gallery',
+            'label' => __('Gallery Images', 'glossop-caravans'),
+            'desc'  => __('Select multiple images to create a visual gallery for this vehicle.', 'glossop-caravans'),
         ),
     ),
 ));
