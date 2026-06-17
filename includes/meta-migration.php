@@ -66,26 +66,44 @@ function cm_meta_migrate_fields_for($context, $type = '')
 /* Backend read / write helpers                                               */
 /* -------------------------------------------------------------------------- */
 
-/** Read a value through the Carbon Fields API (null if CF is unavailable). */
-function cm_meta_migrate_carbon_read($context, $id, $field)
+/**
+ * Read a field's legacy value.
+ *
+ * - association: a single serialized meta row of "type:subtype:id" strings —
+ *   read directly from `_{field}` (no Carbon needed, and avoids two handlers
+ *   fighting over the same key on save).
+ * - complex: stored flattened by Carbon; only Carbon can reassemble it, so read
+ *   through the Carbon API (requires includes/carbon-legacy-fields.php).
+ */
+function cm_meta_migrate_read_legacy($context, $id, $field, $kind)
 {
+    if ($kind === 'association') {
+        $raw = ($context === 'term')
+            ? get_term_meta($id, '_' . $field, true)
+            : get_post_meta($id, '_' . $field, true);
+        return is_array($raw) ? $raw : array();
+    }
+
     if ($context === 'term') {
         return function_exists('carbon_get_term_meta') ? carbon_get_term_meta($id, $field) : null;
     }
     return function_exists('carbon_get_post_meta') ? carbon_get_post_meta($id, $field) : null;
 }
 
-/** Reshape a Carbon value into its native form for the given kind. */
+/** Reshape a legacy value into its native form for the given kind. */
 function cm_meta_migrate_transform($kind, $value)
 {
     if ($kind === 'association') {
         $ids = array();
         if (is_array($value)) {
             foreach ($value as $item) {
-                if (is_array($item) && isset($item['id'])) {
-                    $ids[] = (int) $item['id'];
-                } elseif (is_numeric($item)) {
+                if (is_numeric($item)) {
                     $ids[] = (int) $item;
+                } elseif (is_string($item) && strpos($item, ':') !== false) {
+                    $parts = explode(':', $item);            // "post:page:42" -> 42
+                    $ids[] = (int) end($parts);
+                } elseif (is_array($item) && isset($item['id'])) {
+                    $ids[] = (int) $item['id'];               // tolerate Carbon's item shape
                 }
             }
         }
@@ -190,12 +208,12 @@ function cm_meta_migrate_inspect($obj)
     $out     = array('has_legacy' => false, 'migrated' => cm_meta_migrate_backup_exists($obj['context'], $obj['id']), 'fields' => array());
 
     foreach ($fields as $field => $kind) {
-        $carbon = cm_meta_migrate_carbon_read($obj['context'], $obj['id'], $field);
-        $native = cm_meta_migrate_transform($kind, $carbon);
-        if (! empty($carbon)) {
+        $source = cm_meta_migrate_read_legacy($obj['context'], $obj['id'], $field, $kind);
+        $native = cm_meta_migrate_transform($kind, $source);
+        if (! empty($source)) {
             $out['has_legacy'] = true;
         }
-        $out['fields'][$field] = array('kind' => $kind, 'carbon' => $carbon, 'native' => $native);
+        $out['fields'][$field] = array('kind' => $kind, 'source' => $source, 'native' => $native);
     }
     return $out;
 }
@@ -224,7 +242,7 @@ function cm_meta_migrate_run_object($obj)
     $reads      = array();
     $has_legacy = false;
     foreach ($fields as $field => $kind) {
-        $val = cm_meta_migrate_carbon_read($context, $id, $field);
+        $val = cm_meta_migrate_read_legacy($context, $id, $field, $kind);
         $reads[$field] = $val;
         if (! empty($val)) {
             $has_legacy = true;
@@ -419,12 +437,12 @@ function cm_meta_migrate_admin_page()
         foreach ($preview as $row) {
             echo '<h3>' . esc_html($row['obj']['label']) . '</h3>';
             foreach ($row['info']['fields'] as $field => $data) {
-                if (empty($data['carbon'])) {
+                if (empty($data['source'])) {
                     continue;
                 }
                 echo '<p><strong>' . esc_html($field) . '</strong> (' . esc_html($data['kind']) . ')</p>';
                 echo '<div style="display:flex;gap:16px;flex-wrap:wrap">';
-                echo '<div><em>' . esc_html__('Carbon (read)', 'glossop-caravans') . '</em><pre style="background:#fff;border:1px solid #ccd0d4;padding:8px;max-width:420px;max-height:200px;overflow:auto">' . esc_html(print_r($data['carbon'], true)) . '</pre></div>';
+                echo '<div><em>' . esc_html__('Legacy (read)', 'glossop-caravans') . '</em><pre style="background:#fff;border:1px solid #ccd0d4;padding:8px;max-width:420px;max-height:200px;overflow:auto">' . esc_html(print_r($data['source'], true)) . '</pre></div>';
                 echo '<div><em>' . esc_html__('Native (would write)', 'glossop-caravans') . '</em><pre style="background:#fff;border:1px solid #ccd0d4;padding:8px;max-width:420px;max-height:200px;overflow:auto">' . esc_html(print_r($data['native'], true)) . '</pre></div>';
                 echo '</div>';
             }

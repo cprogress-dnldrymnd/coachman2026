@@ -12,6 +12,7 @@ Classic PHP WordPress theme using Bootstrap 5.3. Content blocks use native Guten
 /                        # Theme root — standard WP template files
 includes/                # PHP modules required by functions.php
 assets/
+  admin/                 # Admin-only JS/CSS (meta-fields.js, meta-fields.css for CM_Meta UI)
   javascripts/main.js    # Frontend JS entry point
   javascripts/blocks.js  # Block editor JS (build-less; registered as coachman-blocks)
   stylesheets/           # SCSS partials (base, sections, utils, plugins)
