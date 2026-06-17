@@ -813,7 +813,7 @@ function cm_render_model_technical_details($attributes)
                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"></path>
                 </svg>
             </button>
-            <div class="offcanvas-body--inner background-white p-3 p-lg-5 d-flex h-100 flex-column justify-content-between gap-3">
+            <div class="offcanvas-body--inner background-white overflow-auto p-3 p-lg-5 d-flex h-100 flex-column justify-content-between gap-3">
                 <div class="top">
                     <div class="title-box d-flex gap-3 align-items-center">
                         <h2><?= wp_get_attachment_image($logo, 'medium') ?></h2>
