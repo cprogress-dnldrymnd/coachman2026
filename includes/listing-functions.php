@@ -46,7 +46,9 @@ function __listing_title($post_id, $tag = false, $class = '')
     ob_start();
     $post_type = get_post_type($post_id);
     $title = get_the_title($post_id);
-    $model = get_the_terms($post_id, $post_type . '_model')[0];
+    $model_terms = get_the_terms($post_id, $post_type . '_model');
+    $model = (is_array($model_terms) && ! empty($model_terms)) ? $model_terms[0] : false;
+    $logo = false;
     if ($model) {
         $logo = get__term_meta($model->term_id, 'logo', true);
         $final_title = str_replace($model->name, ' ', $title);
