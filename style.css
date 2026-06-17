@@ -11962,6 +11962,9 @@ img {
     background-color: var(--bs-black) !important;
     color: #fff !important; }
 
+.listings--posts--grid {
+  height: 100%; }
+
 @media (min-width: 1500px) {
   .container {
     max-width: 1420px; } }
