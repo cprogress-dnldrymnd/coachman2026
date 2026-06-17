@@ -11481,17 +11481,11 @@ img {
     left: 0;
     transform: translateX(-100%);
     background-color: var(--maroon);
-    color: var(--bs-white); }
+    color: var(--bs-white);
+    top: 32px; }
     .offcanvas.offcanvas .btn-close.btn-close svg {
       width: 40px;
       height: 40px; }
-    @media screen and (max-width: 991px) {
-      .offcanvas.offcanvas .btn-close.btn-close {
-        width: 30px;
-        height: 30px;
-        padding: 10px;
-        transform: translateX(-108%);
-        background-size: 15px; } }
   .offcanvas.offcanvas.offcanvas-start .btn-close.btn-close {
     right: 0;
     left: auto;
