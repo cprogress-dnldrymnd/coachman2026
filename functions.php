@@ -130,7 +130,7 @@ function arrayKeyStartsWith($array, $prefix)
 
 require_once('includes/meta-fields.php');   // standalone native meta framework (must load before post-meta)
 require_once('includes/post-meta.php');     // field definitions (registers with CM_Meta)
-require_once('includes/carbon-legacy-fields.php'); // TRANSITIONAL: lets Carbon decode the 2 complex fields for migration; delete after migrating + removing Carbon Fields
+require_once('includes/carbon-legacy-fields2.php'); // TRANSITIONAL: lets Carbon decode the 2 complex fields for migration; delete after migrating + removing Carbon Fields
 require_once('includes/bootstrap-navwalker.php');
 require_once('includes/customizer.php');
 require_once('includes/menus.php');
