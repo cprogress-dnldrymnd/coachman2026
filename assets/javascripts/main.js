@@ -26,7 +26,7 @@ function initializeOffCanvasTrigger() {
         event.preventDefault();
 
         // Capture the proxy button that the user actually clicked
-        $activeTrigger = $(this);
+        $activeTrigger = jQuery(this);
 
         // Programmatically trigger the primary target button
         jQuery('.offCanvasModelSpecs').trigger('click');
