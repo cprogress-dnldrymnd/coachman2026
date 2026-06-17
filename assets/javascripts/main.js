@@ -305,9 +305,18 @@ function fancybox() {
 
     jQuery(document).on('click', '[data-gallery-trigger]', function () {
         var groupName = jQuery(this).data('gallery-trigger');
-        var firstItem = jQuery('.listing-gallery-items a[data-fancybox="' + groupName + '"]').first();
-        if (firstItem.length) {
-            firstItem.trigger('click');
+        var items = [];
+        jQuery('.listing-gallery-items a[data-fancybox="' + groupName + '"]').each(function () {
+            items.push({
+                src: jQuery(this).attr('href'),
+                thumb: jQuery(this).data('thumb'),
+                caption: jQuery(this).data('caption') || '',
+            });
+        });
+        if (items.length) {
+            Fancybox.show(items, {
+                Thumbs: { type: 'modern' },
+            });
         }
     });
 }
