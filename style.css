@@ -11966,6 +11966,13 @@ img {
 .offcanvas--layouts.offcanvas--layouts.offcanvas--layouts.offcanvas--layouts--wide.offCanvasGallery {
   max-width: 1200px; }
 
+#accordionTechnicalDetails .accordion-item {
+  border: 1px solid var(--bs-light-border-subtle) !important;
+  margin-bottom: 10px;
+  border-radius: 10px !important;
+  overflow: hidden;
+  background-color: var(--lightgray-2) !important; }
+
 @media (min-width: 1500px) {
   .container {
     max-width: 1420px; } }

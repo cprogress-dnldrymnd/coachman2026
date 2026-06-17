@@ -272,7 +272,6 @@ img {
             width: 30px;
             height: 30px;
         }
-       
     }
     &.offcanvas-start {
         .btn-close.btn-close {
@@ -882,4 +881,17 @@ img {
 
 .offcanvas--layouts.offcanvas--layouts.offcanvas--layouts.offcanvas--layouts--wide.offCanvasGallery {
     max-width: 1200px;
+}
+
+#accordionTechnicalDetails {
+    .accordion-item {
+        border: 1px solid var(--bs-light-border-subtle) !important;
+        margin-bottom: 10px;
+        border-radius: 10px !important;
+        overflow: hidden;
+        background-color: var(--lightgray-2) !important;
+        .accordion-button {
+            background-color: transparent !important;
+        }
+    }
 }
