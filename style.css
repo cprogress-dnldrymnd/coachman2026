@@ -11628,6 +11628,9 @@ img {
     .swiper-pagination-navigation-style-2.swiper-pagination-navigation-style-2.swiper-pagination-navigation-style-2 {
       gap: 20px; } }
 
+.swiper-pagination-style-custom .swiper-pagination-navigation-style-2.swiper-pagination-navigation-style-2.swiper-pagination-navigation-style-2 {
+  bottom: unset; }
+
 @media screen and (max-width: 991px) {
   .swiper-slider-holder.swiper-nav-style-2 .swiper {
     padding-bottom: 50px; } }
