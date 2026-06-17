@@ -11972,6 +11972,8 @@ img {
   border-radius: 10px !important;
   overflow: hidden;
   background-color: var(--lightgray-2) !important; }
+  #accordionTechnicalDetails .accordion-item .accordion-button {
+    background-color: transparent !important; }
 
 @media (min-width: 1500px) {
   .container {
