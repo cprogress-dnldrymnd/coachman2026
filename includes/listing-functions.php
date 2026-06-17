@@ -260,7 +260,7 @@ function __listing_buttons($post_id)
                                 $thumb_img = wp_get_attachment_image_url($att_id, 'thumbnail');
                                 if ($thumb_img) { ?>
                                     <div class="swiper-slide" style="cursor: pointer;">
-                                        <img src="<?= esc_url($thumb_img) ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 16/9;" alt="">
+                                        <img src="<?= esc_url($thumb_img) ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 16/9; border-radius: 10px" alt="">
                                     </div>
                             <?php }
                             } ?>
