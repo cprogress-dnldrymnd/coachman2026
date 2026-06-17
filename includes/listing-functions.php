@@ -137,23 +137,15 @@ function __listing_buttons($post_id)
 {
     ob_start();
     $_360_walkthrough = get__post_meta_by_id($post_id, '360_walkthrough');
-    $video = get__post_meta_by_id($post_id, 'video');
 ?>
     <div class="listing--buttons mt-2">
         <ul class="d-flex gap-3 m-0 fs-15 p-0 w-100 justify-content-between flex-wrap align-items-center list-inline">
-
-            <?php if ($video) { ?>
-                <li>
-                    <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasVideo-<?= $post_id ?>" aria-controls="offCanvasVideo-<?= $post_id ?>">
-                        Video Tour
-                    </button>
-                </li>
-            <?php } ?>
             <li>
                 <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasSpecification-<?= $post_id ?>" aria-controls="offCanvasSpecification-<?= $post_id ?>">
-                    Specification
+                    Technical
                 </button>
             </li>
+
             <?php if ($_360_walkthrough) { ?>
                 <li>
                     <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvas360-<?= $post_id ?>" aria-controls="offCanvas360-<?= $post_id ?>">
@@ -161,6 +153,7 @@ function __listing_buttons($post_id)
                     </button>
                 </li>
             <?php } ?>
+
         </ul>
     </div>
     <?php if ($_360_walkthrough) { ?>
@@ -176,25 +169,6 @@ function __listing_buttons($post_id)
                     <p class="fs-22">360° Walkthrough</p>
                     <div class="embed-holder position-relative mb-5">
                         <iframe src="<?= $_360_walkthrough ?>" frameborder="0"></iframe>
-                    </div>
-                    <?= do_shortcode('[template template_id=26276]'); ?>
-                </div>
-            </div>
-        </div>
-    <?php } ?>
-    <?php if ($video) { ?>
-        <div class="offcanvas offcanvas--layouts offcanvas-end" tabindex="-1" id="offCanvasVideo-<?= $post_id ?>" aria-labelledby="offCanvasVideo-<?= $post_id ?>Label" aria-modal="true" role="dialog">
-            <div class="offcanvas-body p-0">
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"></path>
-                    </svg>
-                </button>
-                <div class="offcanvas-body--inner background-white rounded overflow-hidden p-3 p-lg-5" <?= $video ?>>
-                    <h2 class="fs-24"><?= __listing_title(get_the_ID()) ?></h2>
-                    <p class="fs-22">Range Tour</p>
-                    <div class="embed-holder position-relative mb-5">
-                        <iframe src="<?= getYoutubeEmbedUrl($video) ?>" frameborder="0"></iframe>
                     </div>
                     <?= do_shortcode('[template template_id=26276]'); ?>
                 </div>
@@ -267,14 +241,14 @@ function specifications($post_id)
         <?= specification($post_id, 'personal_effects', 'Personal Effects') ?>
     </div>
 
-    <?php if (get_post_type($post_id) == 'caravan') { 
-    $caravan_text = get__theme_option('caravan_text');
+    <?php if (get_post_type($post_id) == 'caravan') {
+        $caravan_text = get__theme_option('caravan_text');
         if (!empty($caravan_text)) {
-        ?>
+    ?>
             <p class="otr-price mt-4">
                 <?php echo wp_kses_post($caravan_text); ?>
             </p>
-    <?php } 
+        <?php }
     } else { ?>
         <div class="otr-price mt-4">
             <?= do_shortcode('[motorhome_text_long]') ?>
