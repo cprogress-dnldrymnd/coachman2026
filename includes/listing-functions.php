@@ -242,7 +242,7 @@ function __listing_buttons($post_id)
                     <div class="swiper swiper-main-<?= $post_id ?> mb-3 rounded overflow-hidden">
                         <div class="swiper-wrapper">
                             <?php foreach ($gallery_ids as $att_id) {
-                                $main_img = wp_get_attachment_image_url($att_id, 'large');
+                                $main_img = wp_get_attachment_image_url($att_id, 'full');
                                 if ($main_img) { ?>
                                     <div class="swiper-slide">
                                         <img src="<?= esc_url($main_img) ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 16/9;" alt="">
