@@ -124,12 +124,17 @@
 			category: CATEGORY,
 			icon: opts.icon || 'screenoptions',
 			attributes: opts.attributes || {},
+			// Current-post-context blocks read the Query Loop's per-iteration
+			// post (postId/postType) so previews match the post being looped,
+			// not the template being edited.
+			usesContext: opts.usePostContext ? ['postId', 'postType'] : undefined,
 			supports: { html: false },
 			edit: function (props) {
 				var blockProps = useBlockProps();
 				var ssrProps = { block: name, attributes: props.attributes };
 				if (opts.usePostContext) {
-					ssrProps.urlQueryArgs = { post_id: currentPostId() };
+					var ctxPostId = props.context && props.context.postId;
+					ssrProps.urlQueryArgs = { post_id: ctxPostId || currentPostId() };
 				}
 				var inspector = opts.inspector ? opts.inspector(props) : null;
 				return el(
