@@ -4,7 +4,7 @@ Custom WordPress theme for Glossop Caravans (a caravan/motorhome/campervan deale
 
 ## Architecture
 
-Classic PHP WordPress theme using Bootstrap 5.3. Native Gutenberg blocks (`coachman/*` namespace) are registered alongside the original Carbon Fields blocks. SCSS is compiled to `style.css` via `style.scss`.
+Classic PHP WordPress theme using Bootstrap 5.3. Content blocks use native Gutenberg blocks (`coachman/*` namespace); custom meta fields use a standalone native framework (`CM_Meta`). Both replaced an earlier Carbon Fields implementation — the theme no longer depends on Carbon Fields at runtime (see **Meta fields** below). SCSS is compiled to `style.css` via `style.scss`.
 
 ### Directory structure
 
@@ -26,7 +26,9 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 | File | Purpose |
 |------|---------|
 | `post-types.php` | Registers all CPTs and taxonomies via `newPostType`/`newTaxonomy` classes |
-| `post-meta.php` | Carbon Fields meta field registration |
+| `meta-fields.php` | Standalone native meta-field framework (`CM_Meta`): post meta boxes, term meta, options pages; renders native inputs (incl. nested repeaters & media pickers); saves to `_{name}` |
+| `post-meta.php` | Meta-field **definitions** (declarative `CM_Meta::add_box/add_term_box/add_options_page` calls); also defines `get_posts_by_taxonomy_wpdb` |
+| `meta-migration.php` | One-time Carbon Fields → native meta migration: **Tools → Migrate Carbon Meta** (dry-run / run / revert); reads the 4 complex/association fields via the Carbon API, writes native `_{name}`, backs up to `_cm_meta_premigrate` |
 | `customizer.php` | WordPress Customizer options |
 | `menus.php` | Menu registration |
 | `theme-widgets.php` | Widget areas |
@@ -37,7 +39,6 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 | `hooks.php` | Action/filter hooks |
 | `wpsl.php` | WP Store Locator customisation |
 | `ajax.php` | AJAX handlers (dealer details) |
-| `woocommerce.php` | WooCommerce integration |
 | `gutenberg-blocks.php` | Native `coachman/*` Gutenberg block registration & render callbacks |
 | `block-migration.php` | Bulk migrator: rewrites `carbon-fields/*` block markup to `coachman/*` in `post_content`; adds **Tools → Migrate Carbon Blocks** admin page (dry-run / run / revert); backs up originals to `_cm_premigration_content` post meta |
 
@@ -58,11 +59,23 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 | `timeline` | — | |
 | `template` | `template_category` | Reusable content blocks |
 
+## Meta fields (standalone `CM_Meta` framework)
+
+Custom meta fields were migrated off **Carbon Fields** to a hand-rolled native framework. There is no longer a runtime Carbon Fields dependency (the plugin is only needed transitionally to run the data migration — see below).
+
+- **Framework**: `includes/meta-fields.php` — `CM_Meta::add_box()` (post meta boxes), `CM_Meta::add_term_box()` (term meta), `CM_Meta::add_options_page()` (theme options pages). Renders native inputs for: `text` (with `input` = text/number/url), `textarea`, `select`, `rich_text` (client-side TinyMCE so it works inside repeaters), `oembed` (URL), `image`/`file` (media picker → attachment ID), `date`, `association` (post picker → array of IDs), `complex` (repeater, supports **nesting** — e.g. `stocks → years`). Admin UI in `assets/admin/meta-fields.{js,css}`.
+- **Definitions**: `includes/post-meta.php` — declarative field config only.
+- **Storage** (matches the theme's existing readers `get__post_meta()` / `get__term_meta()` / `get__theme_option()`, which prepend `_`): simple fields → `_{name}` scalar; image/file → `_{name}` attachment ID; association → `_{name}` array of int IDs; complex → `_{name}` array of rows (WP serialises). Repeater rows use client-side index tokens (`{{path}}`) unique per nesting level; the save handler reindexes with `array_values`.
+- **Reading complex/association** in PHP: use `get__post_complex($id,$field)` / `get__term_complex($term_id,$field)` / `get__term_page_id($term_id)` (in `functions.php`). These read native first and **fall back to the Carbon API only while the plugin is still installed** (so there's no front-end gap before the migration runs); the fallback is inert once Carbon Fields is removed.
+
+### Migration (Carbon Fields → native)
+
+Only **4 fields** used Carbon's special storage and need migrating: `technical_details` + `page` (model terms), `stocks` (wpsl_stores), `display_on` (template). Everything else (all simple fields + theme options) was already stored by Carbon at `_{name}` and needs no migration. Sequence: deploy → **Tools → Migrate Carbon Meta** (run) → verify → remove the Carbon Fields plugin. Revert restores each object from its `_cm_meta_premigrate` backup (pair a revert with a code rollback).
+
 ## Key dependencies (plugins required)
 
-- **Carbon Fields** — all custom meta fields (`carbon_get_post_meta`)
 - **WP Store Locator (WPSL)** — dealer/store finder; custom templates in `wpsl-templates/`
-- **WooCommerce** — integrated via `includes/woocommerce.php`
+- **Carbon Fields** — *transitional only*: required to be active to run **Tools → Migrate Carbon Meta**; can be removed once the migration is verified.
 
 ## Styling
 
@@ -87,7 +100,7 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 
 ## Gutenberg Blocks (`coachman/*`)
 
-Registered in `includes/gutenberg-blocks.php` (loaded by `functions.php`); editor JS in `assets/javascripts/blocks.js` (handle `coachman-blocks`). These are editor-friendly replacements for the Carbon Fields `Block::make()` blocks in `post-meta.php`. **Both sets coexist**; new content should use `coachman/*`. All blocks use **apiVersion 3** (set in the PHP `$defaults` array and each JS factory helper).
+Registered in `includes/gutenberg-blocks.php` (loaded by `functions.php`); editor JS in `assets/javascripts/blocks.js` (handle `coachman-blocks`). These replaced the old Carbon Fields `Block::make()` blocks (now removed); `block-migration.php` rewrites any legacy `carbon-fields/*` markup in `post_content`. All blocks use **apiVersion 3** (set in the PHP `$defaults` array and each JS factory helper).
 
 PHP helper functions in `gutenberg-blocks.php`: `cm_block_classname($attributes)` (reads `className`), `cm_term_options($taxonomy)` (builds `{value, label}` option arrays for selectors), `cm_listing_models_posts($attributes)` (reshapes flat block attributes into the per-vehicle post structure).
 

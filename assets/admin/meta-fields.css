@@ -1,0 +1,129 @@
+/* Coachman standalone meta-fields — admin styling. */
+
+.cm-meta-box .cm-fields,
+.cm-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 2%;
+    align-items: flex-start;
+    margin: 4px 0;
+}
+
+.cm-field {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.cm-field .cm-label,
+.cm-field-head .cm-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.cm-field .cm-input,
+.cm-field textarea.cm-input,
+.cm-field select.cm-input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.cm-field .description {
+    margin: 4px 0 0;
+}
+
+/* Media -------------------------------------------------------------- */
+
+.cm-media-preview {
+    margin-bottom: 8px;
+}
+
+.cm-media-preview img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    border: 1px solid #dcdcde;
+    background: #fff;
+    padding: 3px;
+}
+
+.cm-media .cm-file-name {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f0f0f1;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Repeater ----------------------------------------------------------- */
+
+.cm-field-complex {
+    width: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.cm-repeater {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 10px;
+    background: #f6f7f7;
+}
+
+.cm-repeater .cm-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cm-row {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+}
+
+.cm-row-handle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background: #f0f0f1;
+    border-bottom: 1px solid #dcdcde;
+    border-radius: 4px 4px 0 0;
+}
+
+.cm-row-title {
+    font-weight: 600;
+}
+
+.cm-remove-row {
+    color: #b32d2e;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.cm-remove-row:hover {
+    color: #d63638;
+}
+
+.cm-row-body {
+    padding: 10px;
+}
+
+/* Nested repeaters get a subtle inset. */
+.cm-row .cm-repeater {
+    background: #fbfbfc;
+}
+
+.cm-add-row {
+    margin-top: 4px;
+}
+
+/* In the term edit table our box spans full width. */
+.edit-tags-php .cm-meta-box,
+.term-php .cm-meta-box {
+    max-width: 800px;
+}

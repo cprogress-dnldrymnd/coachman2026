@@ -268,7 +268,7 @@ function specifications($post_id)
     </div>
 
     <?php if (get_post_type($post_id) == 'caravan') { 
-    $caravan_text = carbon_get_theme_option('caravan_text');
+    $caravan_text = get__theme_option('caravan_text');
         if (!empty($caravan_text)) {
         ?>
             <p class="otr-price mt-4">

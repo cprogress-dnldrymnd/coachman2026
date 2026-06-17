@@ -735,7 +735,7 @@
 		title: __('Model Technical Details', 'glossop-caravans'),
 		icon: 'media-spreadsheet',
 		attributes: {
-			buttonText: { type: 'string', default: 'View all technical details' },
+			buttonText: { type: 'string', default: 'View all features' },
 			modelId: { type: 'string', default: '' }
 		},
 		inspector: function (props) {

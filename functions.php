@@ -39,14 +39,6 @@ function action_wp_enqueue_scripts()
 }
 add_action('wp_enqueue_scripts', 'action_wp_enqueue_scripts', 20);
 
-/*-----------------------------------------------------------------------------------*/
-/* Register Carbofields
-/*-----------------------------------------------------------------------------------*/
-add_action('carbon_fields_register_fields', 'tissue_paper_register_custom_fields');
-function tissue_paper_register_custom_fields()
-{
-    require_once('includes/post-meta.php');
-}
 function get__post_meta($value)
 {
     return get_post_meta(get_the_ID(), '_' . $value, true);
@@ -66,6 +58,65 @@ function get__theme_option($value)
     return get_option('_' . $value);
 }
 
+/**
+ * Complex (repeater) meta readers with a transitional Carbon Fields fallback.
+ *
+ * Read the native `_{field}` value written by includes/meta-fields.php; if it is
+ * empty and the Carbon Fields plugin is still installed (i.e. the meta migration
+ * has not run yet), fall back to the Carbon API so the front end keeps working
+ * during the transition. Once Tools -> Migrate Carbon Meta has run and Carbon
+ * Fields is uninstalled, the fallback is inert and these can be simplified to a
+ * plain get_post_meta()/get_term_meta() call.
+ */
+function get__post_complex($id, $field)
+{
+    $value = get_post_meta($id, '_' . $field, true);
+    if ((! is_array($value) || count($value) === 0) && function_exists('carbon_get_post_meta')) {
+        $cf = carbon_get_post_meta($id, $field);
+        if (is_array($cf)) {
+            $value = $cf;
+        }
+    }
+    return is_array($value) ? $value : array();
+}
+
+function get__term_complex($term_id, $field)
+{
+    $value = get_term_meta($term_id, '_' . $field, true);
+    if ((! is_array($value) || count($value) === 0) && function_exists('carbon_get_term_meta')) {
+        $cf = carbon_get_term_meta($term_id, $field);
+        if (is_array($cf)) {
+            $value = $cf;
+        }
+    }
+    return is_array($value) ? $value : array();
+}
+
+/**
+ * Resolve a single associated page ID for a model term. Handles both the native
+ * format (array of int IDs) and Carbon's legacy "type:subtype:id" strings, so it
+ * works before and after the meta migration. Returns 0 when none is set.
+ */
+function get__term_page_id($term_id)
+{
+    $page  = get_term_meta($term_id, '_page', true);
+    $first = is_array($page) ? reset($page) : $page;
+    if (is_numeric($first)) {
+        return (int) $first;
+    }
+    if (is_string($first) && strpos($first, ':') !== false) {
+        $parts = explode(':', $first);
+        return (int) end($parts);
+    }
+    if (function_exists('carbon_get_term_meta')) {
+        $cf = carbon_get_term_meta($term_id, 'page');
+        if (! empty($cf[0]['id'])) {
+            return (int) $cf[0]['id'];
+        }
+    }
+    return 0;
+}
+
 function arrayKeyStartsWith($array, $prefix)
 {
     $matchingKeys = [];
@@ -77,6 +128,8 @@ function arrayKeyStartsWith($array, $prefix)
     return $matchingKeys;
 }
 
+require_once('includes/meta-fields.php');   // standalone native meta framework (must load before post-meta)
+require_once('includes/post-meta.php');     // field definitions (registers with CM_Meta)
 require_once('includes/bootstrap-navwalker.php');
 require_once('includes/customizer.php');
 require_once('includes/menus.php');
@@ -90,6 +143,7 @@ require_once('includes/wpsl.php');
 require_once('includes/ajax.php');
 require_once('includes/gutenberg-blocks.php');
 require_once('includes/block-migration.php');
+require_once('includes/meta-migration.php');  // one-time Carbon Fields -> native meta migration (Tools page)
 
 
 

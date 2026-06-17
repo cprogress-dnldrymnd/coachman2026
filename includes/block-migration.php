@@ -155,7 +155,7 @@ function cm_migrate_block($block)
             $newAttrs           = array(
                 'buttonText' => isset($fields['button_text']) && $fields['button_text'] !== ''
                     ? $fields['button_text']
-                    : 'View all technical details',
+                    : 'View all features',
                 'modelId'    => $modelId,
             );
             break;

@@ -5,7 +5,7 @@ function dealer_details_ajax()
 {
 	$post_id = $_POST['post_id'];
 	$_post = get_post($post_id);
-	$stocks = carbon_get_post_meta($post_id, 'stocks');
+	$stocks = get__post_complex($post_id, 'stocks');
 	$wpsl_phone = get_post_meta($post_id, 'wpsl_phone', true);
 	$wpsl_email = get_post_meta($post_id, 'wpsl_email', true);
 	$wpsl_url = get_post_meta($post_id, 'wpsl_url', true);

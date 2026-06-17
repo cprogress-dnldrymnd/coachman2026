@@ -252,7 +252,7 @@ function cm_register_blocks()
     // --- Model Technical Details ------------------------------------------ //
     register_block_type('coachman/model-technical-details', array_merge($defaults, array(
         'attributes'      => array(
-            'buttonText' => array('type' => 'string', 'default' => 'View all technical details'),
+            'buttonText' => array('type' => 'string', 'default' => 'View all features'),
             'modelId'    => array('type' => 'string', 'default' => ''),
         ),
         'render_callback' => 'cm_render_model_technical_details',
@@ -559,7 +559,7 @@ function cm_render_listing_models($attributes)
                             <?php
                             $logo  = get__term_meta($model, 'logo', true);
                             $image = get__term_meta($model, 'image', true);
-                            $page  = carbon_get_term_meta($model, 'page');
+                            $page_id = get__term_page_id($model);
                             $args  = array(
                                 'post_type'  => $post['_type'],
                                 'numberposts' => -1,
@@ -575,8 +575,8 @@ function cm_render_listing_models($attributes)
                             ?>
                             <div class="<?= $class3 ?> ">
                                 <div class="listings--inner h-100 p-4  <?= $display_model_layouts ? 'listings--inner--js has-model-layout' : '' ?>" listing-target=".listings--posts-<?= $key ?>-<?= $post['_type'] ?>-<?= $model ?>">
-                                    <?php if ($page) { ?>
-                                        <a href="<?= get_the_permalink($page[0]['id']) ?>" class="listing--model-link"></a>
+                                    <?php if ($page_id) { ?>
+                                        <a href="<?= get_the_permalink($page_id) ?>" class="listing--model-link"></a>
                                     <?php } ?>
                                     <?php if ($logo) { ?>
                                         <div class="logo-box">
@@ -627,7 +627,7 @@ function cm_render_listing_models($attributes)
                     ),
                 );
                 $posts_listings = get_posts($args);
-                $page           = carbon_get_term_meta($model, 'page');
+                $page_id        = get__term_page_id($model);
                 ?>
                 <div class="listings--posts bg-lightgray-2 listings--posts-<?= $key ?>-<?= $post['_type'] ?>-<?= $model ?>">
                     <div class="container  py-5">
@@ -640,11 +640,11 @@ function cm_render_listing_models($attributes)
                                             <?= get_the_post_thumbnail($posts_listing->ID, 'medium') ?>
                                         </div>
                                         <?= __listing_features($posts_listing->ID) ?>
-                                        <?php if ($page) { ?>
+                                        <?php if ($page_id) { ?>
                                             <div class="listing--buttons mt-2">
                                                 <ul class="d-flex gap-3 m-0 fs-15 p-0 w-100 justify-content-between align-items-center list-inline">
                                                     <li>
-                                                        <a class="py-2 px-0 text-decoration-none" href="<?= get_the_permalink($page[0]['id']) ?>">
+                                                        <a class="py-2 px-0 text-decoration-none" href="<?= get_the_permalink($page_id) ?>">
                                                             Explore
                                                         </a>
                                                     </li>
@@ -655,7 +655,7 @@ function cm_render_listing_models($attributes)
                                 </div>
                             <?php } ?>
                         </div>
-                        <?php $text = carbon_get_theme_option($post['_type'] . '_text') ?>
+                        <?php $text = get__theme_option($post['_type'] . '_text') ?>
                         <p class="otr-price mt-4">
                             <?= $text ?>
                         </p>
@@ -790,7 +790,7 @@ function cm_render_model_technical_details($attributes)
 {
     $button_text = isset($attributes['buttonText']) && $attributes['buttonText'] !== ''
         ? $attributes['buttonText']
-        : 'View all technical details';
+        : 'View all features';
     $model_id = isset($attributes['modelId']) ? $attributes['modelId'] : '';
 
     if (! $model_id) {
@@ -798,7 +798,7 @@ function cm_render_model_technical_details($attributes)
     }
 
     $logo              = get__term_meta($model_id, 'logo', true);
-    $technical_details = carbon_get_term_meta($model_id, 'technical_details');
+    $technical_details = get__term_complex($model_id, 'technical_details');
 
     ob_start(); ?>
     <div class="wp-block-button is-style-fill">
