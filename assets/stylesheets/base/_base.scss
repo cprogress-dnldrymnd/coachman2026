@@ -870,7 +870,7 @@ img {
         border: none;
         color: #fff;
         width: 100%;
-        &:hover {
+        &:hover,&:active, &:focus {
             background-color: var(--bs-black);
             color: #fff;
         }
