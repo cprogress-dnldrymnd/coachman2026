@@ -183,7 +183,7 @@ function __listing_buttons($post_id)
 
             <?php if (!empty($gallery_ids)) { ?>
                 <li>
-                    <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasGallery-<?= $post_id ?>" aria-controls="offCanvasGallery-<?= $post_id ?>">
+                    <button class="py-2 px-0" type="button" data-gallery-trigger="gallery-<?= $post_id ?>">
                         Gallery
                     </button>
                 </li>
@@ -228,82 +228,18 @@ function __listing_buttons($post_id)
     </div>
 
     <?php if (!empty($gallery_ids)) { ?>
-        <div class="offcanvas offcanvas--layouts offcanvas--layouts--wide offcanvas-end offCanvasGallery" tabindex="-1" id="offCanvasGallery-<?= $post_id ?>" aria-labelledby="offCanvasGallery-<?= $post_id ?>Label" aria-modal="true" role="dialog">
-            <div class="offcanvas-body p-0">
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" style="z-index: 1050;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"></path>
-                    </svg>
-                </button>
-                <div class="offcanvas-body--inner background-white overflow-auto p-3 p-lg-5">
-                    <h2 class="fs-24"><?= __listing_title(get_the_ID()) ?></h2>
-                    <p class="fs-22">Gallery</p>
-
-                    <div class="swiper swiper-main-<?= $post_id ?> mb-3 rounded overflow-hidden">
-                        <div class="swiper-wrapper">
-                            <?php foreach ($gallery_ids as $att_id) {
-                                $main_img = wp_get_attachment_image_url($att_id, 'full');
-                                if ($main_img) { ?>
-                                    <div class="swiper-slide">
-                                        <img src="<?= esc_url($main_img) ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 16/9;" alt="">
-                                    </div>
-                            <?php }
-                            } ?>
-                        </div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-
-                    <div class="swiper swiper-thumbs-<?= $post_id ?> rounded overflow-hidden mb-5">
-                        <div class="swiper-wrapper">
-                            <?php foreach ($gallery_ids as $att_id) {
-                                $thumb_img = wp_get_attachment_image_url($att_id, 'thumbnail');
-                                if ($thumb_img) { ?>
-                                    <div class="swiper-slide" style="cursor: pointer;">
-                                        <img src="<?= esc_url($thumb_img) ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 16/9; border-radius: 10px" alt="">
-                                    </div>
-                            <?php }
-                            } ?>
-                        </div>
-                    </div>
-
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            var galleryOffcanvas = document.getElementById('offCanvasGallery-<?= $post_id ?>');
-
-                            galleryOffcanvas.addEventListener('shown.bs.offcanvas', function() {
-                                if (!window['swiperThumbs_<?= $post_id ?>']) {
-                                    window['swiperThumbs_<?= $post_id ?>'] = new Swiper('.swiper-thumbs-<?= $post_id ?>', {
-                                        spaceBetween: 10,
-                                        slidesPerView: 4,
-                                        freeMode: true,
-                                        watchSlidesProgress: true,
-                                        breakpoints: {
-                                            768: {
-                                                slidesPerView: 5
-                                            },
-                                            1024: {
-                                                slidesPerView: 6
-                                            }
-                                        }
-                                    });
-
-                                    window['swiperMain_<?= $post_id ?>'] = new Swiper('.swiper-main-<?= $post_id ?>', {
-                                        spaceBetween: 10,
-                                        navigation: {
-                                            nextEl: '.swiper-main-<?= $post_id ?> .swiper-button-next',
-                                            prevEl: '.swiper-main-<?= $post_id ?> .swiper-button-prev',
-                                        },
-                                        thumbs: {
-                                            swiper: window['swiperThumbs_<?= $post_id ?>'],
-                                        },
-                                    });
-                                }
-                            });
-                        });
-                    </script>
-                </div>
-            </div>
+        <div class="listing-gallery-items" style="display:none;" aria-hidden="true">
+            <?php foreach ($gallery_ids as $att_id) {
+                $full_img  = wp_get_attachment_image_url($att_id, 'full');
+                $thumb_img = wp_get_attachment_image_url($att_id, 'thumbnail');
+                $alt       = get_post_meta($att_id, '_wp_attachment_image_alt', true);
+                if ($full_img) { ?>
+                    <a href="<?= esc_url($full_img) ?>"
+                       data-fancybox="gallery-<?= $post_id ?>"
+                       data-thumb="<?= esc_url($thumb_img ?: $full_img) ?>"
+                       <?php if ($alt) { ?>data-caption="<?= esc_attr($alt) ?>"<?php } ?>></a>
+            <?php }
+            } ?>
         </div>
     <?php } ?>
 

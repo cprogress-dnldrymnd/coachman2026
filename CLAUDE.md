@@ -36,7 +36,7 @@ wpsl-templates/          # WP Store Locator custom templates & markers
 | `bootstrap-navwalker.php` | Bootstrap-compatible nav walker |
 | `shortcodes.php` | Custom shortcodes |
 | `custom-functions.php` | Misc helper functions |
-| `listing-functions.php` | Caravan/stock listing helpers |
+| `listing-functions.php` | Caravan/stock listing helpers; `__listing_buttons()` renders the gallery trigger and Fancybox anchor group |
 | `hooks.php` | Action/filter hooks |
 | `wpsl.php` | WP Store Locator customisation |
 | `ajax.php` | AJAX handlers (dealer details) |
@@ -94,6 +94,10 @@ Only **4 fields** used Carbon's special storage and need migrating: `technical_d
 ### Sticky header / `--header-height`
 
 `setHeaderHeight()` sets `--header-height` on `<body>` from `#masthead`'s measured height. `updateScrollStatus()` toggles `sticky--header` on scroll and **re-measures after 500 ms** whenever the sticky state changes, because the sticky transition shrinks the header's padding over 500 ms. `.sticky-element` uses `top: calc(var(--header-height, 75px) + var(--admin-bar-height, 0px))`. Do not call `setHeaderHeight()` synchronously after toggling the sticky class — the transition hasn't settled yet.
+
+### Listing gallery (Fancybox)
+
+`__listing_buttons()` in `listing-functions.php` outputs a hidden `.listing-gallery-items` div containing `<a data-fancybox="gallery-{post_id}">` anchors for each gallery image. The "Gallery" button carries `data-gallery-trigger="gallery-{post_id}"` — clicking it is intercepted in `fancybox()` (delegated `[data-gallery-trigger]` handler), which finds and clicks the first anchor in that group to open Fancybox with `Thumbs: { type: "modern" }`. There is no offcanvas or Swiper panel for the listing gallery.
 
 ### Mega-menu / offcanvas gotcha
 

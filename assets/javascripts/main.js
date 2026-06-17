@@ -1,6 +1,6 @@
 jQuery(document).ready(function () {
     swiper_sliders();
-    //fancybox();
+    fancybox();
     mega_menu();
     // search_stock();
     listings();
@@ -298,14 +298,17 @@ function mega_menu() {
 
 function fancybox() {
     Fancybox.bind("[data-fancybox]", {
-        // Your custom options
+        Thumbs: {
+            type: "modern",
+        },
     });
 
-    jQuery('.zoom').click(function (e) {
-        jQuery(this).next().find('.swiper-slide-active a').addClass('sdsdss');
-        jQuery(this).next().find('.swiper-slide-active a').trigger('click');
-        console.log('mama mo');
-        e.preventDefault();
+    jQuery(document).on('click', '[data-gallery-trigger]', function () {
+        var groupName = jQuery(this).data('gallery-trigger');
+        var firstItem = jQuery('.listing-gallery-items a[data-fancybox="' + groupName + '"]').first();
+        if (firstItem.length) {
+            firstItem.trigger('click');
+        }
     });
 }
 
