@@ -16,81 +16,90 @@ jQuery(document).ready(function () {
 
 function swiper_gallery_pagination_fix() {
     /**
-     * Dynamically repositions the Swiper pagination container to align directly
-     * below the target paragraph of the currently active slide.
-     * * @function updatePaginationPosition
+     * Initializes scoped pagination repositioning for each custom Swiper block.
+     * Iterates over all matching wrappers to ensure distinct carousels on the 
+     * same document calculate their offsets independently.
+     * * @function initScopedPaginationRepositioning
      * @returns {void}
      */
-    function updatePaginationPosition() {
-        // Target the active slide block
-        const $activeSlide = jQuery('.swiper-slide-active');
-        if (!$activeSlide.length) return;
+    function initScopedPaginationRepositioning() {
 
-        // Isolate the specific paragraph we want to anchor to
-        const $paragraph = $activeSlide.find('.wp-block-paragraph').last();
-        const $pagination = jQuery('.swiper-pagination-navigation-style-2');
+        // Target the outer wrapper to establish an isolated DOM scope
+        jQuery('.swiper-pagination-style-custom').each(function () {
+            const $scope = jQuery(this);
 
-        // Ensure necessary elements exist in the DOM before calculating
-        if ($paragraph.length > 0 && $pagination.length > 0) {
+            // Isolate the Swiper container specific to this wrapper
+            const swiperNode = $scope.find('.swiper')[0];
 
-            // Calculate the document-relative coordinates of the paragraph
-            const paragraphOffset = $paragraph.offset();
-            const paragraphHeight = $paragraph.outerHeight();
+            /**
+             * Calculates and applies the positional offset for the pagination container
+             * strictly within the boundaries of the parent $scope.
+             * * @function updatePositionInScope
+             * @returns {void}
+             */
+            const updatePositionInScope = () => {
+                // Target the active slide block natively within this iteration's scope
+                const $activeSlide = $scope.find('.swiper-slide-active');
+                if (!$activeSlide.length) return;
 
-            // Set the pagination container to absolute, elevate its z-index above the slides, 
-            // and apply the calculated layout coordinates using jQuery's offset mapping.
-            $pagination.css({
-                'position': 'absolute',
-                'z-index': 100,
-                'width': 'max-content' // Prevents the container from stretching arbitrarily 
-            }).offset({
-                top: paragraphOffset.top + paragraphHeight + 30, // 30px spacing buffer below the text
-                left: paragraphOffset.left
+                // Isolate the specific paragraph and the pagination container
+                const $paragraph = $activeSlide.find('.wp-block-paragraph').last();
+                const $pagination = $scope.find('.swiper-pagination-navigation-style-2');
+
+                // Ensure necessary elements exist in the DOM before calculating
+                if ($paragraph.length > 0 && $pagination.length > 0) {
+
+                    // Calculate the document-relative coordinates of the paragraph
+                    const paragraphOffset = $paragraph.offset();
+                    const paragraphHeight = $paragraph.outerHeight();
+
+                    // Set the pagination container to absolute, elevate its z-index above the slides, 
+                    // and apply the calculated layout coordinates using jQuery's offset mapping.
+                    $pagination.css({
+                        'position': 'absolute',
+                        'z-index': 100,
+                        'width': 'max-content' // Prevents the container from stretching arbitrarily 
+                    }).offset({
+                        top: paragraphOffset.top + paragraphHeight + 30, // 30px spacing buffer below the text
+                        left: paragraphOffset.left
+                    });
+                }
+            };
+
+            // Fire logic initially and bind to window resizes to correct layout reflows
+            jQuery(window).on('load resize', function () {
+                setTimeout(updatePositionInScope, 100);
             });
-        }
-    }
 
-    /**
-     * Initializes event listeners to trigger the pagination repositioning logic.
-     * Combines standard DOM events with native Swiper hooks for architectural redundancy.
-     * * @function initPaginationRepositioning
-     * @returns {void}
-     */
-    function initPaginationRepositioning() {
-        // Fire logic initially and bind to window resizes to correct layout reflows
-        jQuery(window).on('load resize', function () {
-            setTimeout(updatePaginationPosition, 100);
-        });
+            // Optimal route: Intercept the native Swiper instance events if exposed
+            if (swiperNode && swiperNode.swiper) {
 
-        const swiperContainer = document.getElementById('InteriorGallery');
+                // Binding to 'slideChangeTransitionEnd' guarantees the elements 
+                // have stopped moving before we calculate their positional offsets.
+                swiperNode.swiper.on('slideChangeTransitionEnd', updatePositionInScope);
 
-        // Optimal route: Intercept the native Swiper instance events if exposed
-        if (swiperContainer && swiperContainer.swiper) {
-
-            // Binding to 'slideChangeTransitionEnd' guarantees the elements 
-            // have stopped moving before we calculate their positional offsets.
-            swiperContainer.swiper.on('slideChangeTransitionEnd', updatePaginationPosition);
-
-        } else {
-            // Fallback route: Utilize a MutationObserver to monitor class changes on the wrappers
-            // in scenarios where the Swiper object is inaccessible to this scope.
-            const observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    if (mutation.attributeName === 'class' && jQuery(mutation.target).hasClass('swiper-slide-active')) {
-                        // Apply a timeout matching typical slide transition durations (e.g., 300ms - 500ms)
-                        setTimeout(updatePaginationPosition, 400);
-                    }
+            } else {
+                // Fallback route: Utilize a MutationObserver to monitor class changes on the wrappers
+                // in scenarios where the Swiper object is inaccessible to this scope.
+                const observer = new MutationObserver(function (mutations) {
+                    mutations.forEach(function (mutation) {
+                        if (mutation.attributeName === 'class' && jQuery(mutation.target).hasClass('swiper-slide-active')) {
+                            // Apply a timeout matching typical slide transition durations (e.g., 300ms - 500ms)
+                            setTimeout(updatePositionInScope, 400);
+                        }
+                    });
                 });
-            });
 
-            jQuery('.swiper-slide').each(function () {
-                observer.observe(this, { attributes: true });
-            });
-        }
+                // Confine the observer solely to the slides within the current scope
+                $scope.find('.swiper-slide').each(function () {
+                    observer.observe(this, { attributes: true });
+                });
+            }
+        });
     }
 
     // Execute the initializer
-    initPaginationRepositioning();
+    initScopedPaginationRepositioning();
 }
 
 
