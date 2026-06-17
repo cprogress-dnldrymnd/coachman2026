@@ -802,7 +802,7 @@ function cm_render_model_technical_details($attributes)
 
     ob_start(); ?>
     <div class="wp-block-button is-style-fill">
-        <button class="wp-block-button__link w-auto has-white-theme-color has-maroon-background-color has-text-color has-background has-link-color wp-element-button" style="border-radius:0px" data-bs-toggle="offcanvas" data-bs-target="#offCanvasModelSpecs-<?= $model_id ?>" aria-controls="offCanvasModelSpecs-<?= $model_id ?>">
+        <button class="wp-block-button__link w-auto has-white-theme-color has-maroon-background-color has-text-color has-background has-link-color wp-element-button offCanvasModelSpecs" style="border-radius:0px" data-bs-toggle="offcanvas" data-bs-target="#offCanvasModelSpecs-<?= $model_id ?>" aria-controls="offCanvasModelSpecs-<?= $model_id ?>">
             <?= $button_text ?>
         </button>
     </div>
