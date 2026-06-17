@@ -11949,14 +11949,18 @@ img {
 .has-white-theme-color .title-box img {
   filter: brightness(100); }
 
-.listing--buttons.listing--buttons button {
+.listing--buttons.listing--buttons.listing--buttons ul {
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto; }
+.listing--buttons.listing--buttons.listing--buttons button {
   background-color: var(--maroon);
   padding: 10px !important;
   border: none;
   color: #fff;
   width: 100%; }
-  .listing--buttons.listing--buttons button:hover {
-    background-color: var(--bs-black); }
+  .listing--buttons.listing--buttons.listing--buttons button:hover {
+    background-color: var(--bs-black);
+    color: #fff; }
 
 @media (min-width: 1500px) {
   .container {
