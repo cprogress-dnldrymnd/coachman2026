@@ -871,8 +871,8 @@ img {
         color: #fff;
         width: 100%;
         &:hover,&:active, &:focus {
-            background-color: var(--bs-black);
-            color: #fff;
+            background-color: var(--bs-black) !important;
+            color: #fff !important;
         }
     }
 }

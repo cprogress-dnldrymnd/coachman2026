@@ -11958,9 +11958,9 @@ img {
   border: none;
   color: #fff;
   width: 100%; }
-  .listing--buttons.listing--buttons.listing--buttons button:hover {
-    background-color: var(--bs-black);
-    color: #fff; }
+  .listing--buttons.listing--buttons.listing--buttons button:hover, .listing--buttons.listing--buttons.listing--buttons button:active, .listing--buttons.listing--buttons.listing--buttons button:focus {
+    background-color: var(--bs-black) !important;
+    color: #fff !important; }
 
 @media (min-width: 1500px) {
   .container {

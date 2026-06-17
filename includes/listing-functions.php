@@ -133,12 +133,29 @@ function __listing_features($post_id)
 }
 
 
+/**
+ * Generates listing action buttons and their corresponding offcanvas modals.
+ * Includes Technical, 360 Walkthrough, Features, and a Swiper-based Gallery.
+ *
+ * @param int $post_id The ID of the post/vehicle.
+ * @return string HTML output containing buttons and modals.
+ */
 function __listing_buttons($post_id)
 {
     ob_start();
     $_360_walkthrough = get__post_meta_by_id($post_id, '360_walkthrough');
-    $model_id = get_the_terms($post_id, get_post_type() . '_model')[0]->term_id;
 
+    // Safely extract the model ID to prevent fatal errors if terms are missing or return WP_Error
+    $model_terms = get_the_terms($post_id, get_post_type() . '_model');
+    $model_id    = (!empty($model_terms) && !is_wp_error($model_terms)) ? $model_terms[0]->term_id : 0;
+
+    // Extract and sanitize gallery IDs
+    $raw_gallery = get__post_meta_by_id($post_id, 'gallery');
+    $gallery_ids = [];
+    if (!empty($raw_gallery)) {
+        $gallery_ids = is_array($raw_gallery) ? $raw_gallery : explode(',', $raw_gallery);
+        $gallery_ids = array_filter(array_map('intval', $gallery_ids));
+    }
 ?>
     <div class="listing--buttons mt-2">
         <ul class="d-grid gap-3 m-0 fs-15 p-0 w-100 justify-content-between flex-wrap align-items-center list-inline">
@@ -156,14 +173,24 @@ function __listing_buttons($post_id)
                 </li>
             <?php } ?>
 
-            <li>
-                <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasModelSpecs-<?= $model_id ?>" aria-controls="offCanvasModelSpecs-<?= $post_id ?>">
-                    Features
-                </button>
-            </li>
+            <?php if ($model_id) { ?>
+                <li>
+                    <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasModelSpecs-<?= $model_id ?>" aria-controls="offCanvasModelSpecs-<?= $post_id ?>">
+                        Features
+                    </button>
+                </li>
+            <?php } ?>
 
+            <?php if (!empty($gallery_ids)) { ?>
+                <li>
+                    <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasGallery-<?= $post_id ?>" aria-controls="offCanvasGallery-<?= $post_id ?>">
+                        Gallery
+                    </button>
+                </li>
+            <?php } ?>
         </ul>
     </div>
+
     <?php if ($_360_walkthrough) { ?>
         <div class="offcanvas offcanvas--layouts offcanvas-end" tabindex="-1" id="offCanvas360-<?= $post_id ?>" aria-labelledby="offCanvas360-<?= $post_id ?>Label" aria-modal="true" role="dialog">
             <div class="offcanvas-body p-0 ">
@@ -199,10 +226,92 @@ function __listing_buttons($post_id)
             </div>
         </div>
     </div>
+
+    <?php if (!empty($gallery_ids)) { ?>
+        <div class="offcanvas offcanvas--layouts offcanvas--layouts--wide offcanvas-end" tabindex="-1" id="offCanvasGallery-<?= $post_id ?>" aria-labelledby="offCanvasGallery-<?= $post_id ?>Label" aria-modal="true" role="dialog">
+            <div class="offcanvas-body p-0">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" style="z-index: 1050;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"></path>
+                    </svg>
+                </button>
+                <div class="offcanvas-body--inner background-white rounded overflow-hidden p-3 p-lg-5">
+                    <h2 class="fs-24"><?= __listing_title(get_the_ID()) ?></h2>
+                    <p class="fs-22">Gallery</p>
+
+                    <div class="swiper swiper-main-<?= $post_id ?> mb-3 rounded overflow-hidden">
+                        <div class="swiper-wrapper">
+                            <?php foreach ($gallery_ids as $att_id) {
+                                $main_img = wp_get_attachment_image_url($att_id, 'large');
+                                if ($main_img) { ?>
+                                    <div class="swiper-slide">
+                                        <img src="<?= esc_url($main_img) ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 16/9;" alt="">
+                                    </div>
+                            <?php }
+                            } ?>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+
+                    <div class="swiper swiper-thumbs-<?= $post_id ?> rounded overflow-hidden mb-5">
+                        <div class="swiper-wrapper">
+                            <?php foreach ($gallery_ids as $att_id) {
+                                $thumb_img = wp_get_attachment_image_url($att_id, 'thumbnail');
+                                if ($thumb_img) { ?>
+                                    <div class="swiper-slide" style="cursor: pointer;">
+                                        <img src="<?= esc_url($thumb_img) ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 16/9;" alt="">
+                                    </div>
+                            <?php }
+                            } ?>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var galleryOffcanvas = document.getElementById('offCanvasGallery-<?= $post_id ?>');
+
+                            galleryOffcanvas.addEventListener('shown.bs.offcanvas', function() {
+                                if (!window['swiperThumbs_<?= $post_id ?>']) {
+                                    window['swiperThumbs_<?= $post_id ?>'] = new Swiper('.swiper-thumbs-<?= $post_id ?>', {
+                                        spaceBetween: 10,
+                                        slidesPerView: 4,
+                                        freeMode: true,
+                                        watchSlidesProgress: true,
+                                        breakpoints: {
+                                            768: {
+                                                slidesPerView: 5
+                                            },
+                                            1024: {
+                                                slidesPerView: 6
+                                            }
+                                        }
+                                    });
+
+                                    window['swiperMain_<?= $post_id ?>'] = new Swiper('.swiper-main-<?= $post_id ?>', {
+                                        spaceBetween: 10,
+                                        navigation: {
+                                            nextEl: '.swiper-main-<?= $post_id ?> .swiper-button-next',
+                                            prevEl: '.swiper-main-<?= $post_id ?> .swiper-button-prev',
+                                        },
+                                        thumbs: {
+                                            swiper: window['swiperThumbs_<?= $post_id ?>'],
+                                        },
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+
+                    <?= do_shortcode('[template template_id=26276]'); ?>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
 <?php
     return ob_get_clean();
 }
-
 
 function specifications($post_id)
 {
