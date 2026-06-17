@@ -731,6 +731,9 @@
 	/* Model Technical Details                                            */
 	/* ----------------------------------------------------------------- */
 
+	/**
+	 * Registers the Model Technical Details server-side rendered block.
+	 */
 	registerServerBlock('coachman/model-technical-details', {
 		title: __('Model Technical Details', 'glossop-caravans'),
 		icon: 'media-spreadsheet',
@@ -738,16 +741,28 @@
 			buttonText: { type: 'string', default: 'View all features' },
 			modelId: { type: 'string', default: '' }
 		},
+		/**
+		 * Renders the InspectorControls for the Model Technical Details block.
+		 * Concatenates caravan, motorhome, and campervan models into a unified selection.
+		 * * @param {Object} props - Block properties including attributes and setAttributes function.
+		 * @returns {Object} React element for the block inspector panel.
+		 */
 		inspector: function (props) {
 			var a = props.attributes;
 			var set = props.setAttributes;
+			
+			// Build the selection options by merging localized models from all 3 taxonomies.
 			var modelOptions = [{ label: __('— Select a model —', 'glossop-caravans'), value: '' }]
 				.concat(caravanModels.map(function (o) {
 					return { label: __('Caravan', 'glossop-caravans') + ': ' + o.label, value: o.value };
 				}))
 				.concat(motorhomeModels.map(function (o) {
 					return { label: __('Motorhome', 'glossop-caravans') + ': ' + o.label, value: o.value };
+				}))
+				.concat(campervanModels.map(function (o) {
+					return { label: __('Campervan', 'glossop-caravans') + ': ' + o.label, value: o.value };
 				}));
+				
 			return el(
 				PanelBody,
 				{ title: __('Technical details settings', 'glossop-caravans'), initialOpen: true },
