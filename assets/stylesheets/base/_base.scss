@@ -3,7 +3,7 @@ body {
     --header-height-default: 104.453px;
 }
 #wpadminbar {
-    z-index: 999999999 !important;
+    z-index: 9999 !important;
 }
 img {
     height: auto;
@@ -269,8 +269,8 @@ img {
         color: var(--bs-white);
         top: 32px;
         svg {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
         }
        
     }
