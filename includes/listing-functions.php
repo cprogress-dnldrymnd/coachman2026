@@ -139,7 +139,6 @@ function __listing_buttons($post_id)
     $_360_walkthrough = get__post_meta_by_id($post_id, '360_walkthrough');
     $model_id = get_the_terms($post_id, get_post_type() . '_model')[0]->term_id;
 
-    echo $model_id;
 ?>
     <div class="listing--buttons mt-2">
         <ul class="d-flex gap-3 m-0 fs-15 p-0 w-100 justify-content-between flex-wrap align-items-center list-inline">
@@ -158,7 +157,7 @@ function __listing_buttons($post_id)
             <?php } ?>
 
             <li>
-                <button class="py-2 px-0 offCanvasModelSpecs-trigger" type="button">
+                <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasModelSpecs-<?= $model_id ?>" aria-controls="offCanvasModelSpecs-<?= $post_id ?>">
                     Features
                 </button>
             </li>
