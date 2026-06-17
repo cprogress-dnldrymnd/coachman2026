@@ -426,6 +426,7 @@ img {
     position: absolute;
     justify-content: flex-end;
     right: 0;
+    bottom: 0;
     width: 50%;
     --swiper-navigation-color: currentColor;
     --swiper-pagination-color: currentColor;
@@ -463,6 +464,11 @@ img {
     }
     @include responsive(xs-sm) {
         gap: 20px;
+    }
+}
+.swiper-pagination-style-custom {
+    .swiper-pagination-navigation-style-2.swiper-pagination-navigation-style-2.swiper-pagination-navigation-style-2 {
+        bottom: unset;
     }
 }
 
