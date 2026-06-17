@@ -21,13 +21,13 @@ jQuery(document).ready(function () {
  * Uses event delegation to ensure dynamic elements are supported.
  */
 function initializeOffCanvasTrigger() {
-    $(document).on('click', '.offCanvasModelSpecs-trigger', function (event) {
+    jQuery(document).on('click', '.offCanvasModelSpecs-trigger', function (event) {
         // Prevent default browser behavior (e.g., if the trigger is an <a> tag)
         // to avoid unintended navigation or page jumps.
         event.preventDefault();
 
         // Programmatically trigger the click handler attached to the target element.
-        $('.offCanvasModelSpecs').trigger('click');
+        jQuery('.offCanvasModelSpecs').trigger('click');
     });
 }
 
