@@ -900,3 +900,7 @@ img {
         }
     }
 }
+
+.fancybox__container.fancybox__container {
+    z-index: 9999;
+}

@@ -97,7 +97,7 @@ Only **4 fields** used Carbon's special storage and need migrating: `technical_d
 
 ### Listing gallery (Fancybox)
 
-`__listing_buttons()` in `listing-functions.php` outputs a hidden `.listing-gallery-items` div containing `<a data-fancybox="gallery-{post_id}">` anchors for each gallery image. The "Gallery" button carries `data-gallery-trigger="gallery-{post_id}"` — clicking it is intercepted in `fancybox()` (delegated `[data-gallery-trigger]` handler), which finds and clicks the first anchor in that group to open Fancybox with `Thumbs: { type: "modern" }`. There is no offcanvas or Swiper panel for the listing gallery.
+`__listing_buttons()` in `listing-functions.php` outputs a hidden `.listing-gallery-items` div containing `<a data-fancybox="gallery-{post_id}">` anchors for each gallery image. The "Gallery" button carries `data-gallery-trigger="gallery-{post_id}"` — clicking it is intercepted in `fancybox()` (delegated `[data-gallery-trigger]` handler), which collects `{src, thumb, caption}` from each anchor in that group into an `items` array and calls `Fancybox.show(items, { Thumbs: { type: 'modern' } })` directly. There is no offcanvas or Swiper panel for the listing gallery.
 
 ### Mega-menu / offcanvas gotcha
 
