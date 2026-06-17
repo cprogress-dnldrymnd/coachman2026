@@ -11946,6 +11946,9 @@ img {
     left: 50%;
     top: 8px; }
 
+.has-white-theme-color .title-box img {
+  filter: brightness(100); }
+
 @media (min-width: 1500px) {
   .container {
     max-width: 1420px; } }
@@ -13225,17 +13228,68 @@ body.sticky--header #masthead {
     .offcanvas--technical-details.offcanvas--technical-details .wp-block-buttons > .wp-block-button {
       flex-grow: 1; } }
 
-.video-tour-carousel .embed-holder {
-  padding: 28.1%; }
-  .video-tour-carousel .embed-holder iframe {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    object-fit: cover;
+.video-tour-carousel {
+  --swiper-navigation-color: var(--bs-white);
+  --swiper-navigation-size: 20px; }
+  .video-tour-carousel .swiper {
+    position: relative;
+    padding-bottom: 40px; }
+  .video-tour-carousel .video-tour-carousel--title .title-box img {
+    max-height: 26px;
+    width: auto; }
+  .video-tour-carousel .embed-holder {
+    position: relative;
     width: 100%;
-    height: 100%; }
+    height: 0;
+    padding: 0;
+    padding-top: 56.25%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--bs-black); }
+    .video-tour-carousel .embed-holder iframe {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      border: 0; }
+  .video-tour-carousel .swiper-button-prev,
+  .video-tour-carousel .swiper-button-next {
+    width: 48px;
+    height: 48px;
+    margin-top: 0;
+    top: calc((100% - 40px) / 2);
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background-color: var(--maroon);
+    -webkit-transition: 200ms;
+    -moz-transition: 200ms;
+    -ms-transition: 200ms;
+    -o-transition: 200ms;
+    transition: 200ms; }
+    .video-tour-carousel .swiper-button-prev::after,
+    .video-tour-carousel .swiper-button-next::after {
+      font-weight: 700; }
+    .video-tour-carousel .swiper-button-prev:hover, .video-tour-carousel .swiper-button-prev:active, .video-tour-carousel .swiper-button-prev:focus,
+    .video-tour-carousel .swiper-button-next:hover,
+    .video-tour-carousel .swiper-button-next:active,
+    .video-tour-carousel .swiper-button-next:focus {
+      background-color: var(--bs-black); }
+  .video-tour-carousel .swiper-button-prev {
+    left: 16px; }
+  .video-tour-carousel .swiper-button-next {
+    right: 16px; }
+  .video-tour-carousel .swiper-button-disabled {
+    opacity: 0.35; }
+  .video-tour-carousel .swiper-pagination {
+    position: absolute;
+    bottom: 0;
+    --swiper-pagination-color: var(--maroon);
+    --swiper-pagination-bullet-inactive-color: var(--dark);
+    --swiper-pagination-bullet-inactive-opacity: 0.3;
+    --swiper-pagination-bullet-size: 10px; }
 
 /*-----------------------------------------------------------------------------------*/
 /* Plugins

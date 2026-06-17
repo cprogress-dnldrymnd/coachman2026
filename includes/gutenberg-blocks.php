@@ -737,39 +737,49 @@ function cm_render_video_tour_carousel($attributes)
         return '';
     }
 
-    $swiper_id = 'videoTourCarousel-' . $post_type . '-' . $model_id;
-    $atts      = array(
+    $has_multiple = count($videos) > 1;
+    $swiper_id    = 'videoTourCarousel-' . $post_type . '-' . $model_id;
+    $atts         = array(
         'slidesPerView' => 1,
         'spaceBetween'  => 25,
-        'pagination'    => array(
+    );
+
+    // Only wire up looping + controls when there's more than one video to show.
+    if ($has_multiple) {
+        $atts['loop']       = true;
+        $atts['pagination'] = array(
             'el'        => '#' . $swiper_id . ' .swiper-pagination',
             'clickable' => 'true',
-        ),
-        'navigation'    => array(
+        );
+        $atts['navigation'] = array(
             'nextEl' => '#' . $swiper_id . ' .swiper-button-next',
             'prevEl' => '#' . $swiper_id . ' .swiper-button-prev',
-        ),
-    );
+        );
+    }
     $atts_json = json_encode($atts);
 
     ob_start(); ?>
     <div class="video-tour-carousel swiper-slider-holder <?= esc_attr($classname) ?>" swiper_atts='<?= esc_attr($atts_json) ?>'>
-        <div class="swiper swiper-slider-block" id="<?= esc_attr($swiper_id) ?>">
-            <div class="swiper-wrapper">
-                <?php foreach ($videos as $video) { ?>
-                    <div class="swiper-slide">
-                        <div class="video-tour-carousel--slide">
-                            <h3 class="fs-24"><?= __listing_title($video['id']) ?></h3>
-                            <div class="embed-holder position-relative">
-                                <iframe src="<?= esc_url($video['embed']) ?>" frameborder="0" allowfullscreen></iframe>
+        <div class="container">
+            <div class="swiper swiper-slider-block" id="<?= esc_attr($swiper_id) ?>">
+                <div class="swiper-wrapper">
+                    <?php foreach ($videos as $video) { ?>
+                        <div class="swiper-slide">
+                            <div class="video-tour-carousel--slide">
+                                <h3 class="video-tour-carousel--title fs-24 mb-3"><?= __listing_title($video['id']) ?></h3>
+                                <div class="embed-holder position-relative">
+                                    <iframe src="<?= esc_url($video['embed']) ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
+                </div>
+                <?php if ($has_multiple) { ?>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
                 <?php } ?>
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
         </div>
     </div>
 <?php
