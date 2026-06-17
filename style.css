@@ -11266,6 +11266,9 @@ body {
   --admin-bar-height: 0px;
   --header-height-default: 104.453px; }
 
+#wpadminbar {
+  z-index: 999999999 !important; }
+
 img {
   height: auto; }
 
@@ -11467,17 +11470,18 @@ img {
   width: 100%; }
   .offcanvas.offcanvas .btn-close.btn-close {
     position: absolute;
-    left: 0;
     border-radius: 0;
     opacity: 1;
-    padding: 0;
-    width: 43px;
-    height: 37px;
-    transform: translateX(-180%);
+    width: 40px;
+    height: 40px;
     background-size: 25px;
     background-image: none;
-    color: var(--bs-white);
-    top: 40px; }
+    right: 0;
+    padding: 5px;
+    left: 0;
+    transform: translateX(-100%);
+    background-color: var(--maroon);
+    color: var(--bs-white); }
     .offcanvas.offcanvas .btn-close.btn-close svg {
       width: 40px;
       height: 40px; }
