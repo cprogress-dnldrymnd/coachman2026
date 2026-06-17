@@ -151,7 +151,7 @@ function __listing_buttons($post_id)
             <?php if ($_360_walkthrough) { ?>
                 <li>
                     <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvas360-<?= $post_id ?>" aria-controls="offCanvas360-<?= $post_id ?>">
-                        360° Walkthrough
+                        360°
                     </button>
                 </li>
             <?php } ?>
