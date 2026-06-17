@@ -302,8 +302,6 @@ function __listing_buttons($post_id)
                             });
                         });
                     </script>
-
-                    <?= do_shortcode('[template template_id=26276]'); ?>
                 </div>
             </div>
         </div>
