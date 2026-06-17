@@ -228,7 +228,7 @@ function __listing_buttons($post_id)
     </div>
 
     <?php if (!empty($gallery_ids)) { ?>
-        <div class="offcanvas offcanvas--layouts offcanvas--layouts--wide offcanvas-end" tabindex="-1" id="offCanvasGallery-<?= $post_id ?>" aria-labelledby="offCanvasGallery-<?= $post_id ?>Label" aria-modal="true" role="dialog">
+        <div class="offcanvas offcanvas--layouts offcanvas--layouts--wide offcanvas-end offCanvasGallery" tabindex="-1" id="offCanvasGallery-<?= $post_id ?>" aria-labelledby="offCanvasGallery-<?= $post_id ?>Label" aria-modal="true" role="dialog">
             <div class="offcanvas-body p-0">
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" style="z-index: 1050;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">

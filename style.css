@@ -11965,6 +11965,9 @@ img {
 .listings--posts--grid {
   height: 100%; }
 
+#offCanvasGallery {
+  max-width: 1000px; }
+
 @media (min-width: 1500px) {
   .container {
     max-width: 1420px; } }
