@@ -158,7 +158,7 @@ function __listing_buttons($post_id)
     }
 ?>
     <div class="listing--buttons mt-2">
-        <ul class="d-grid gap-3 m-0 fs-15 p-0 w-100 justify-content-between flex-wrap align-items-center list-inline">
+        <ul class="d-grid gap-2 m-0 fs-15 p-0 w-100 justify-content-between flex-wrap align-items-center list-inline">
             <li>
                 <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasSpecification-<?= $post_id ?>" aria-controls="offCanvasSpecification-<?= $post_id ?>">
                     Technical
