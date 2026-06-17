@@ -315,7 +315,7 @@ function fancybox() {
         });
         if (items.length) {
             Fancybox.show(items, {
-                Thumbs: { type: 'modern' },
+                Thumbs: { type: 'classic' },
             });
         }
     });
