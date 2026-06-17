@@ -11267,7 +11267,7 @@ body {
   --header-height-default: 104.453px; }
 
 #wpadminbar {
-  z-index: 999999999 !important; }
+  z-index: 9999 !important; }
 
 img {
   height: auto; }
@@ -11492,7 +11492,7 @@ img {
     transform: translateX(180%); }
     @media screen and (max-width: 991px) {
       .offcanvas.offcanvas.offcanvas-start .btn-close.btn-close {
-        transform: translateX(120%); } }
+        transform: translateX(100%); } }
   @media screen and (min-width: 992px) {
     .offcanvas.offcanvas.offcanvas-visible-desktop {
       max-width: 100%;

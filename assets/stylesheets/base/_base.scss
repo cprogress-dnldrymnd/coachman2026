@@ -280,7 +280,7 @@ img {
             left: auto;
             transform: translateX(180%);
             @include responsive(xs-sm) {
-                transform: translateX(120%);
+                transform: translateX(100%);
             }
         }
     }
