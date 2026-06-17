@@ -852,3 +852,9 @@ img {
         top: 8px;
     }
 }
+
+.has-white-theme-color {
+    .title-box img {
+        filter: brightness(100);
+    }
+}
