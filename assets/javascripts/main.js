@@ -299,7 +299,7 @@ function mega_menu() {
 function fancybox() {
     Fancybox.bind("[data-fancybox]", {
         Thumbs: {
-            type: "modern",
+            type: "classic",
         },
     });
 
