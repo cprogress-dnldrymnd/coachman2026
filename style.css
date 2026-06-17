@@ -13225,6 +13225,18 @@ body.sticky--header #masthead {
     .offcanvas--technical-details.offcanvas--technical-details .wp-block-buttons > .wp-block-button {
       flex-grow: 1; } }
 
+.video-tour-carousel .embed-holder {
+  padding: 28.1%; }
+  .video-tour-carousel .embed-holder iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%; }
+
 /*-----------------------------------------------------------------------------------*/
 /* Plugins
 /*-----------------------------------------------------------------------------------*/

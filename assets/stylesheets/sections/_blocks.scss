@@ -144,3 +144,19 @@
         }
     }
 }
+
+.video-tour-carousel {
+    .embed-holder {
+        padding: 28.1%;
+        iframe {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

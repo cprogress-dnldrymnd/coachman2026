@@ -675,6 +675,59 @@
 	});
 
 	/* ----------------------------------------------------------------- */
+	/* Video Tour Carousel                                                */
+	/* ----------------------------------------------------------------- */
+
+	registerServerBlock('coachman/video-tour-carousel', {
+		title: __('Video Tour Carousel', 'glossop-caravans'),
+		icon: 'format-video',
+		attributes: {
+			postType: { type: 'string', default: '' },
+			modelId: { type: 'string', default: '' }
+		},
+		inspector: function (props) {
+			var a = props.attributes;
+			var set = props.setAttributes;
+
+			// Term list to offer depends on the chosen post type.
+			var modelsByType = {
+				caravan: caravanModels,
+				motorhome: motorhomeModels,
+				campervan: campervanModels
+			};
+			var modelOptions = [{ label: __('— Select a model —', 'glossop-caravans'), value: '' }]
+				.concat((modelsByType[a.postType] || []).map(function (o) {
+					return { label: o.label, value: o.value };
+				}));
+
+			return el(
+				PanelBody,
+				{ title: __('Video tour settings', 'glossop-caravans'), initialOpen: true },
+				el(SelectControl, {
+					label: __('Post type', 'glossop-caravans'),
+					value: a.postType,
+					options: [
+						{ label: __('— Select a post type —', 'glossop-caravans'), value: '' },
+						{ label: __('Caravan', 'glossop-caravans'), value: 'caravan' },
+						{ label: __('Motorhome', 'glossop-caravans'), value: 'motorhome' },
+						{ label: __('Campervan', 'glossop-caravans'), value: 'campervan' }
+					],
+					// Reset the model when the post type (and so its taxonomy) changes.
+					onChange: function (v) { set({ postType: v, modelId: '' }); }
+				}),
+				a.postType
+					? el(SelectControl, {
+						label: __('Model', 'glossop-caravans'),
+						value: a.modelId,
+						options: modelOptions,
+						onChange: function (v) { set({ modelId: v }); }
+					})
+					: null
+			);
+		}
+	});
+
+	/* ----------------------------------------------------------------- */
 	/* Model Technical Details                                            */
 	/* ----------------------------------------------------------------- */
 

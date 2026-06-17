@@ -240,6 +240,15 @@ function cm_register_blocks()
         'render_callback' => 'cm_render_listing_buttons',
     )));
 
+    // --- Video Tour Carousel ---------------------------------------------- //
+    register_block_type('coachman/video-tour-carousel', array_merge($defaults, array(
+        'attributes'      => array(
+            'postType' => array('type' => 'string', 'default' => ''),
+            'modelId'  => array('type' => 'string', 'default' => ''),
+        ),
+        'render_callback' => 'cm_render_video_tour_carousel',
+    )));
+
     // --- Model Technical Details ------------------------------------------ //
     register_block_type('coachman/model-technical-details', array_merge($defaults, array(
         'attributes'      => array(
@@ -672,6 +681,99 @@ function cm_render_listing_feature($attributes)
 function cm_render_listing_buttons($attributes)
 {
     return __listing_buttons(get_the_ID());
+}
+
+/**
+ * Video Tour Carousel — a Swiper carousel of the "Video tour" oembed for every
+ * post of a chosen post type filed under a chosen model term. Each slide mirrors
+ * the offCanvasVideo embed markup from __listing_buttons().
+ */
+function cm_render_video_tour_carousel($attributes)
+{
+    $classname = cm_block_classname($attributes);
+    $post_type = isset($attributes['postType']) ? $attributes['postType'] : '';
+    $model_id  = isset($attributes['modelId']) ? $attributes['modelId'] : '';
+
+    $taxonomy_map = array(
+        'caravan'   => 'caravan_model',
+        'motorhome' => 'motorhome_model',
+        'campervan' => 'campervan_model',
+    );
+
+    if (! $post_type || ! isset($taxonomy_map[$post_type]) || ! $model_id) {
+        return '';
+    }
+
+    $listings = get_posts(array(
+        'post_type'      => $post_type,
+        'posts_per_page' => -1,
+        'orderby'        => 'title',
+        'order'          => 'ASC',
+        'tax_query'      => array(
+            array(
+                'taxonomy' => $taxonomy_map[$post_type],
+                'field'    => 'term_id',
+                'terms'    => $model_id,
+            ),
+        ),
+    ));
+
+    // Keep only the listings that actually have a video tour, resolving the
+    // YouTube embed URL up front (drop anything that doesn't resolve).
+    $videos = array();
+    foreach ($listings as $listing) {
+        $video = get__post_meta_by_id($listing->ID, 'video');
+        if (! $video) {
+            continue;
+        }
+        $embed = getYoutubeEmbedUrl($video);
+        if (! $embed) {
+            continue;
+        }
+        $videos[] = array('id' => $listing->ID, 'embed' => $embed);
+    }
+
+    if (empty($videos)) {
+        return '';
+    }
+
+    $swiper_id = 'videoTourCarousel-' . $post_type . '-' . $model_id;
+    $atts      = array(
+        'slidesPerView' => 1,
+        'spaceBetween'  => 25,
+        'pagination'    => array(
+            'el'        => '#' . $swiper_id . ' .swiper-pagination',
+            'clickable' => 'true',
+        ),
+        'navigation'    => array(
+            'nextEl' => '#' . $swiper_id . ' .swiper-button-next',
+            'prevEl' => '#' . $swiper_id . ' .swiper-button-prev',
+        ),
+    );
+    $atts_json = json_encode($atts);
+
+    ob_start(); ?>
+    <div class="video-tour-carousel swiper-slider-holder <?= esc_attr($classname) ?>" swiper_atts='<?= esc_attr($atts_json) ?>'>
+        <div class="swiper swiper-slider-block" id="<?= esc_attr($swiper_id) ?>">
+            <div class="swiper-wrapper">
+                <?php foreach ($videos as $video) { ?>
+                    <div class="swiper-slide">
+                        <div class="video-tour-carousel--slide">
+                            <h3 class="fs-24"><?= __listing_title($video['id']) ?></h3>
+                            <div class="embed-holder position-relative">
+                                <iframe src="<?= esc_url($video['embed']) ?>" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+<?php
+    return ob_get_clean();
 }
 
 function cm_render_model_technical_details($attributes)
