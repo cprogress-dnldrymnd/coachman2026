@@ -858,3 +858,20 @@ img {
         filter: brightness(100);
     }
 }
+
+.listing--buttons.listing--buttons {
+    ul {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: auto;
+    }
+    button {
+        background-color: var(--maroon);
+        padding: 10px !important;
+        border: none;
+        color: #fff;
+        width: 100%;
+        &:hover {
+            background-color: var(--bs-black);
+        }
+    }
+}
