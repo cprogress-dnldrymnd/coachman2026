@@ -155,7 +155,7 @@ function __listing_buttons($post_id)
             <?php } ?>
 
             <li>
-                <button class="py-2 px-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvas360-<?= $post_id ?>" aria-controls="offCanvas360-<?= $post_id ?>">
+                <button class="py-2 px-0 offCanvasModelSpecs-trigger" type="button">
                     Features
                 </button>
             </li>

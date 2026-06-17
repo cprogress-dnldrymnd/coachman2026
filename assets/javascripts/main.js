@@ -11,7 +11,25 @@ jQuery(document).ready(function () {
     ajax_details();
     careers();
     find_dealer();
+    initializeOffCanvasTrigger();
 });
+
+/**
+ * Initializes the off-canvas model specifications trigger mechanism.
+ * Binds a click event listener to the trigger element, which programmatically
+ * dispatches a click event to the target off-canvas toggle button.
+ * Uses event delegation to ensure dynamic elements are supported.
+ */
+function initializeOffCanvasTrigger() {
+    $(document).on('click', '.offCanvasModelSpecs-trigger', function (event) {
+        // Prevent default browser behavior (e.g., if the trigger is an <a> tag)
+        // to avoid unintended navigation or page jumps.
+        event.preventDefault();
+
+        // Programmatically trigger the click handler attached to the target element.
+        $('.offCanvasModelSpecs').trigger('click');
+    });
+}
 
 function find_dealer() {
     jQuery('.wpsl-search').addClass('container');
