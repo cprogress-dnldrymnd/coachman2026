@@ -11,53 +11,8 @@ jQuery(document).ready(function () {
     ajax_details();
     careers();
     find_dealer();
-    initializeOffCanvasTrigger();
 });
 
-/**
- * Initializes the proxy trigger for the off-canvas/modal specifications.
- * Bypasses Bootstrap's default focus-return behavior to prevent unwanted scroll jumps.
- */
-function initializeOffCanvasTrigger() {
-    let $activeTrigger = null;
-    let savedScrollPosition = 0;
-
-    jQuery(document).on('click', '.offCanvasModelSpecs-trigger', function (event) {
-        event.preventDefault();
-
-        // Capture the proxy button that the user actually clicked
-        $activeTrigger = jQuery(this);
-
-        // Programmatically trigger the primary target button
-        jQuery('.offCanvasModelSpecs').trigger('click');
-    });
-
-    // Intercept the 'hide' event right before the closing transition finishes.
-    // We bind to both modal and offcanvas namespaces to ensure compatibility 
-    // regardless of which Bootstrap component is actively rendering.
-    jQuery(document).on('hide.bs.modal hide.bs.offcanvas', function () {
-        if ($activeTrigger) {
-            // Record the exact viewport scroll position before Bootstrap alters focus
-            savedScrollPosition = jQuery(window).scrollTop();
-        }
-    });
-
-    // Intercept the 'hidden' event immediately after Bootstrap executes its focus-return logic
-    jQuery(document).on('hidden.bs.modal hidden.bs.offcanvas', function () {
-        if ($activeTrigger) {
-            // 1. Instantly revert the viewport to the cached scroll position, neutralizing the jump
-            jQuery(window).scrollTop(savedScrollPosition);
-
-            // 2. Redirect the DOM focus back to the proxy trigger safely using the native API
-            if ($activeTrigger.length && typeof $activeTrigger[0].focus === 'function') {
-                $activeTrigger[0].focus({ preventScroll: true });
-            }
-
-            // Nullify the reference to reset the state for subsequent clicks
-            $activeTrigger = null;
-        }
-    });
-}
 
 function find_dealer() {
     jQuery('.wpsl-search').addClass('container');
