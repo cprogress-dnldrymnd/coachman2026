@@ -13146,7 +13146,16 @@ body.sticky--header #masthead {
     gap: 20px; }
     @media (max-width: 991px) {
       .specifications .specification {
-        width: 100%; } }
+        width: 100%;
+        font-size: 14px;}
+      .specifications .meta-value {
+        white-space: nowrap;
+      } 
+      .specifications .meta-value p {
+        text-align: right;
+      } 
+        
+    }
 
 #listing--details--results .listings--posts {
   height: auto !important; }
@@ -13323,6 +13332,25 @@ body.sticky--header #masthead {
     --swiper-pagination-bullet-inactive-opacity: 0.3;
     --swiper-pagination-bullet-size: 10px; }
 
+.table-grid{
+    width: 100%;
+}
+.table-grid th,
+.table-grid td{
+    word-break: normal;
+}
+.table-grid th:not(:last-child),
+.table-grid td:not(:last-child){
+    padding-right: 10px;
+}
+
+.table-grid tbody tr:not(:last-child) td,
+.table-grid th{
+    padding-bottom: 20px;
+}
+.checklists-holder:has(.table-grid){
+    overflow: auto;
+}
 /*-----------------------------------------------------------------------------------*/
 /* Plugins
 /*-----------------------------------------------------------------------------------*/

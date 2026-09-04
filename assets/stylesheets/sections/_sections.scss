@@ -304,6 +304,15 @@
         gap: 20px;
         @media(max-width: 991px) {
             width: 100%;
+            font-size: 14px;
+        }
+    }
+    @media(max-width: 991px) {
+        .meta-value {
+            white-space: nowrap;
+            p {
+                text-align: right;
+            }
         }
     }
 }

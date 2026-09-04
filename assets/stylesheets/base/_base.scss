@@ -507,6 +507,25 @@ img {
     }
 }
 
+.table-grid {
+    width: 100%;
+    th,
+    td {
+        word-break: normal;
+    }
+    th:not(:last-child),
+    td:not(:last-child) {
+        padding-right: 10px;
+    }
+    tbody tr:not(:last-child) td,
+    th {
+        padding-bottom: 20px;
+    }
+}
+.checklists-holder:has(.table-grid) {
+    overflow: auto;
+}
+
 .offcanvas-backdrop.offcanvas-backdrop {
     z-index: 9999;
 }
