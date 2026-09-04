@@ -944,10 +944,11 @@ function cm_meta_render_complex_row($subfields, $input, $index, $row, $header_fi
         $header_text = (string) $row[$header_field];
     }
 
-    $html  = '<div class="cm-row">';
+    $html  = '<div class="cm-row cm-row--collapsed" data-header="' . esc_attr($header_field) . '">';
     $html .= '<div class="cm-row-handle">';
     $html .= '<span class="cm-row-drag dashicons dashicons-menu" title="' . esc_attr__('Drag to reorder', 'glossop-caravans') . '" aria-label="' . esc_attr__('Drag to reorder', 'glossop-caravans') . '"></span>';
-    $html .= '<span class="cm-row-title">' . esc_html($header_text) . '</span>';
+    $html .= '<button type="button" class="cm-row-toggle" aria-expanded="false" title="' . esc_attr__('Expand / collapse', 'glossop-caravans') . '"><span class="dashicons dashicons-arrow-right"></span></button>';
+    $html .= '<span class="cm-row-title">' . esc_html($header_text !== '' ? $header_text : __('(untitled)', 'glossop-caravans')) . '</span>';
     $html .= '<button type="button" class="button-link cm-remove-row" aria-label="' . esc_attr__('Remove row', 'glossop-caravans') . '">&times;</button></div>';
     $html .= '<div class="cm-row-body">';
     $html .= cm_meta_render_fields($subfields, $row_base, is_array($row) ? $row : array());

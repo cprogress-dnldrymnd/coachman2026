@@ -51,6 +51,10 @@
      */
     function initRichText(scope) {
         $(scope).find('.cm-richtext').each(function () {
+            // Skip editors inside collapsed rows — TinyMCE mis-sizes hidden textareas.
+            if ($(this).closest('.cm-row--collapsed').length) {
+                return;
+            }
             initEditor(this);
         });
     }
@@ -100,6 +104,7 @@
             return;
         }
         rows.appendChild(newRow);
+        setRowCollapsed(newRow, false);
         initRichText(newRow);
         initSortable(newRow);
     });
@@ -117,6 +122,54 @@
             removeEditor(this);
         });
         row.parentNode.removeChild(row);
+    });
+
+    /**
+     * Collapse / expand a repeater row. Collapsed rows are one-line headers —
+     * much easier to drag-sort when many stocks are present.
+     *
+     * @param {HTMLElement} row
+     * @param {boolean} collapsed
+     */
+    function setRowCollapsed(row, collapsed) {
+        var $row = $(row);
+        var $toggle = $row.children('.cm-row-handle').find('.cm-row-toggle');
+        $row.toggleClass('cm-row--collapsed', collapsed);
+        $toggle.attr('aria-expanded', collapsed ? 'false' : 'true');
+        if (collapsed) {
+            $row.children('.cm-row-body').find('.cm-richtext').each(function () {
+                removeEditor(this);
+            });
+        } else {
+            initRichText($row.children('.cm-row-body')[0]);
+        }
+    }
+
+    $(document).on('click', '.cm-row-toggle, .cm-row-title', function (e) {
+        e.preventDefault();
+        var row = $(this).closest('.cm-row')[0];
+        if (!row) {
+            return;
+        }
+        setRowCollapsed(row, !$(row).hasClass('cm-row--collapsed'));
+    });
+
+    /**
+     * Keep the handle title in sync with the row's header field as the user types.
+     */
+    $(document).on('input change', '.cm-row-body input, .cm-row-body textarea, .cm-row-body select', function () {
+        var $row = $(this).closest('.cm-row');
+        var header = $row.attr('data-header');
+        if (!header) {
+            return;
+        }
+        var name = this.name || '';
+        var suffix = '[' + header + ']';
+        if (name.slice(-suffix.length) !== suffix) {
+            return;
+        }
+        var text = (this.value || '').toString().trim();
+        $row.children('.cm-row-handle').find('.cm-row-title').text(text || '(untitled)');
     });
 
     /**
@@ -146,10 +199,12 @@
                     ui.item.find('.cm-richtext').each(function () {
                         removeEditor(this);
                     });
-                    ui.placeholder.height(ui.item.outerHeight());
+                    ui.placeholder.height(Math.max(ui.item.outerHeight(), 36));
                 },
                 stop: function (e, ui) {
-                    initRichText(ui.item[0]);
+                    if (!ui.item.hasClass('cm-row--collapsed')) {
+                        initRichText(ui.item[0]);
+                    }
                 }
             });
         });
