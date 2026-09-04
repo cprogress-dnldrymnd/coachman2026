@@ -181,6 +181,46 @@ CM_Meta::add_box(array(
 ));
 
 /* -------------------------------------------------------------------------- */
+/* Campervan properties                                                       */
+/* -------------------------------------------------------------------------- */
+
+CM_Meta::add_box(array(
+    'id'     => 'campervan_properties',
+    'title'  => __('Campervan Properties', 'glossop-caravans'),
+    'screen' => 'campervan',
+    'fields' => array(
+        array('type' => 'text', 'input' => 'number', 'name' => 'price', 'label' => __('Price', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'length', 'label' => __('Length', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'layout', 'label' => __('Layout', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'axles', 'label' => __('Axles', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'select', 'name' => 'berths', 'label' => __('Berths', 'glossop-caravans'), 'width' => 25, 'options' => $berths_options),
+        array('type' => 'text', 'name' => 'travelling_seats', 'label' => __('Travelling Seats', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'overall_length', 'label' => __('Overall Length', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'overall_width', 'label' => __('Overall Width', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'overall_width_incl_mirrors', 'label' => __('Overall Width (including mirrors extended)', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'track_width_front', 'label' => __('Track Width (Front)', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'track_width_rear', 'label' => __('Track Width (Rear)', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'overall_height_incl_aircon', 'label' => __('Overall Height (including Air Conditioning)', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'wheelbase', 'label' => __('Wheelbase', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'tyre_size', 'label' => __('Tyre Size', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'mtplm', 'label' => __('MTPLM', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'mass', 'label' => __('Mass in Running Order', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'personal_payload', 'label' => __('Personal Payload', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'max_gross_weight', 'label' => __('Max Gross Weight', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'mass_available_for_optional_payload', 'label' => __('Mass Available for Optional Payload', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'conventional_load', 'label' => __('Conventional Load', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'essential_habitation_equipment', 'label' => __('Essential Habitation Equipment', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'optional_equipment', 'label' => __('Optional Equipment', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'personal_effects', 'label' => __('Personal Effects', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'base_vehicle', 'label' => __('Base Vehicle', 'glossop-caravans'), 'width' => 100),
+        array('type' => 'oembed', 'name' => '360_walkthrough', 'label' => __('360 Walkthrough', 'glossop-caravans'), 'width' => 50),
+        array('type' => 'oembed', 'name' => 'video', 'label' => __('Video tour', 'glossop-caravans'), 'width' => 50),
+    ),
+));
+
+/* -------------------------------------------------------------------------- */
 /* Brochure (downloads)                                                       */
 /* -------------------------------------------------------------------------- */
 
