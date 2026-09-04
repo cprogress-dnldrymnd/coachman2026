@@ -134,7 +134,7 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 50),
 
         array('type' => 'separator', 'label' => __('Beds', 'glossop-caravans')),
-        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 50),
+        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 100),
 
         array('type' => 'separator', 'label' => __('Weights & payload', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'mtplm', 'label' => __('MTPLM', 'glossop-caravans'), 'width' => 25),
@@ -145,7 +145,7 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'upper_mtplm', 'label' => __('Upper MTPLM (Optional weight plate upgrade)', 'glossop-caravans'), 'width' => 75),
 
         array('type' => 'separator', 'label' => __('Other', 'glossop-caravans')),
-        array('type' => 'text', 'name' => 'awning_size', 'label' => __('Awning Size (Approx. for reference only)', 'glossop-caravans'), 'width' => 50),
+        array('type' => 'text', 'name' => 'awning_size', 'label' => __('Awning Size (Approx. for reference only)', 'glossop-caravans'), 'width' => 100),
 
         array('type' => 'separator', 'label' => __('Media', 'glossop-caravans')),
         array('type' => 'oembed', 'name' => '360_walkthrough', 'label' => __('360 Walkthrough', 'glossop-caravans'), 'width' => 50),
@@ -184,7 +184,7 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 50),
 
         array('type' => 'separator', 'label' => __('Beds', 'glossop-caravans')),
-        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 50),
+        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 100),
 
         array('type' => 'separator', 'label' => __('Weights & payload', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'mtplm', 'label' => __('MTPLM', 'glossop-caravans'), 'width' => 25),
@@ -237,7 +237,7 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 50),
 
         array('type' => 'separator', 'label' => __('Beds', 'glossop-caravans')),
-        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 50),
+        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 100),
 
         array('type' => 'separator', 'label' => __('Weights & payload', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'mtplm', 'label' => __('MTPLM', 'glossop-caravans'), 'width' => 25),

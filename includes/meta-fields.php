@@ -564,11 +564,60 @@ function cm_meta_row_has_content($row)
  */
 function cm_meta_render_fields($fields, $base, $values)
 {
-    $html = '<div class="cm-fields">';
+    // Split on separator markers so each group becomes a full-width card with
+    // its own nested grid — headings can never sit mid-row beside fields.
+    $groups = array();
+    $current = array(
+        'label'  => '',
+        'fields' => array(),
+    );
+
     foreach ($fields as $field) {
-        $name  = isset($field['name']) ? $field['name'] : '';
-        $value = ($name !== '' && isset($values[$name])) ? $values[$name] : null;
-        $html .= cm_meta_render_field($field, $base, $value);
+        $type = isset($field['type']) ? $field['type'] : 'text';
+        if ($type === 'separator') {
+            if (! empty($current['fields']) || $current['label'] !== '') {
+                $groups[] = $current;
+            }
+            $current = array(
+                'label'  => isset($field['label']) ? $field['label'] : '',
+                'fields' => array(),
+            );
+            continue;
+        }
+        $current['fields'][] = $field;
+    }
+    if (! empty($current['fields']) || $current['label'] !== '') {
+        $groups[] = $current;
+    }
+
+    // No separators: keep a single flat grid (repeaters, simple boxes).
+    if (count($groups) === 1 && $groups[0]['label'] === '') {
+        $html = '<div class="cm-fields">';
+        foreach ($groups[0]['fields'] as $field) {
+            $name  = isset($field['name']) ? $field['name'] : '';
+            $value = ($name !== '' && isset($values[$name])) ? $values[$name] : null;
+            $html .= cm_meta_render_field($field, $base, $value);
+        }
+        $html .= '</div>';
+        return $html;
+    }
+
+    $html = '<div class="cm-fields cm-fields--grouped">';
+    foreach ($groups as $group) {
+        if (empty($group['fields'])) {
+            continue;
+        }
+        $html .= '<section class="cm-field-group">';
+        if ($group['label'] !== '') {
+            $html .= '<header class="cm-field-group__head"><h4 class="cm-section-title">' . esc_html($group['label']) . '</h4></header>';
+        }
+        $html .= '<div class="cm-field-group__body cm-fields-grid">';
+        foreach ($group['fields'] as $field) {
+            $name  = isset($field['name']) ? $field['name'] : '';
+            $value = ($name !== '' && isset($values[$name])) ? $values[$name] : null;
+            $html .= cm_meta_render_field($field, $base, $value);
+        }
+        $html .= '</div></section>';
     }
     $html .= '</div>';
     return $html;
@@ -598,12 +647,9 @@ function cm_meta_render_field($field, $base, $value)
 {
     $type = isset($field['type']) ? $field['type'] : 'text';
 
-    // UI-only section heading — no input, never persisted.
+    // Separators are handled by cm_meta_render_fields() as group wrappers.
     if ($type === 'separator') {
-        $label = isset($field['label']) ? $field['label'] : '';
-        return '<div class="cm-field cm-field-separator cm-field--span-12">'
-            . '<h4 class="cm-section-title">' . esc_html($label) . '</h4>'
-            . '</div>';
+        return '';
     }
 
     $name  = isset($field['name']) ? $field['name'] : '';
