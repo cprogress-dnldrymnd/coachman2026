@@ -113,28 +113,41 @@ CM_Meta::add_box(array(
     'title'  => __('Caravan Properties', 'glossop-caravans'),
     'screen' => 'caravan',
     'fields' => array(
+        array('type' => 'separator', 'label' => __('Basics', 'glossop-caravans')),
         array('type' => 'text', 'input' => 'number', 'name' => 'price', 'label' => __('Price', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'length', 'label' => __('Length', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'layout', 'label' => __('Layout', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'axles', 'label' => __('Axles', 'glossop-caravans'), 'width' => 25),
         array('type' => 'select', 'name' => 'berths', 'label' => __('Berths', 'glossop-caravans'), 'width' => 25, 'options' => $berths_options),
+
+        array('type' => 'separator', 'label' => __('Dimensions', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'interior_length', 'label' => __('Interior Length', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_length', 'label' => __('Overall Length', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_width', 'label' => __('Overall Width', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_height_incl_tv', 'label' => __('Overall Height (including T.V Aerial)', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_height_incl_aircon', 'label' => __('Overall Height (including Air Conditioning)', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'maximum_headroom', 'label' => __('Maximum Headroom', 'glossop-caravans'), 'width' => 25),
+
+        array('type' => 'separator', 'label' => __('Wheels & tyres', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'wheel_rim', 'label' => __('Wheel Rim', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'tyre_size', 'label' => __('Tyre Size', 'glossop-caravans'), 'width' => 25),
-        array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 25),
-        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Beds', 'glossop-caravans')),
+        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Weights & payload', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'mtplm', 'label' => __('MTPLM', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'mass', 'label' => __('Mass in Running Order', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'personal_payload', 'label' => __('Personal Payload', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'max_payload', 'label' => __('Total / Maximum User Payload', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'max_hitch_weight', 'label' => __('Maximum Hitch Weight', 'glossop-caravans'), 'width' => 25),
-        array('type' => 'text', 'name' => 'awning_size', 'label' => __('Awning Size (Approx. for reference only)', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'upper_mtplm', 'label' => __('Upper MTPLM (Optional weight plate upgrade)', 'glossop-caravans'), 'width' => 75),
+
+        array('type' => 'separator', 'label' => __('Other', 'glossop-caravans')),
+        array('type' => 'text', 'name' => 'awning_size', 'label' => __('Awning Size (Approx. for reference only)', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Media', 'glossop-caravans')),
         array('type' => 'oembed', 'name' => '360_walkthrough', 'label' => __('360 Walkthrough', 'glossop-caravans'), 'width' => 50),
         array('type' => 'oembed', 'name' => 'video', 'label' => __('Video tour', 'glossop-caravans'), 'width' => 50),
     ),
@@ -149,12 +162,15 @@ CM_Meta::add_box(array(
     'title'  => __('Motorhome Properties', 'glossop-caravans'),
     'screen' => 'motorhome',
     'fields' => array(
+        array('type' => 'separator', 'label' => __('Basics', 'glossop-caravans')),
         array('type' => 'text', 'input' => 'number', 'name' => 'price', 'label' => __('Price', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'length', 'label' => __('Length', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'layout', 'label' => __('Layout', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'axles', 'label' => __('Axles', 'glossop-caravans'), 'width' => 25),
         array('type' => 'select', 'name' => 'berths', 'label' => __('Berths', 'glossop-caravans'), 'width' => 25, 'options' => $berths_options),
         array('type' => 'text', 'name' => 'travelling_seats', 'label' => __('Travelling Seats', 'glossop-caravans'), 'width' => 25),
+
+        array('type' => 'separator', 'label' => __('Dimensions', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'overall_length', 'label' => __('Overall Length', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_width', 'label' => __('Overall Width', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_width_incl_mirrors', 'label' => __('Overall Width (including mirrors extended)', 'glossop-caravans'), 'width' => 25),
@@ -162,9 +178,15 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'track_width_rear', 'label' => __('Track Width (Rear)', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_height_incl_aircon', 'label' => __('Overall Height (including Air Conditioning)', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'wheelbase', 'label' => __('Wheelbase', 'glossop-caravans'), 'width' => 25),
+
+        array('type' => 'separator', 'label' => __('Wheels & tyres', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'tyre_size', 'label' => __('Tyre Size', 'glossop-caravans'), 'width' => 25),
-        array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 25),
-        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Beds', 'glossop-caravans')),
+        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Weights & payload', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'mtplm', 'label' => __('MTPLM', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'mass', 'label' => __('Mass in Running Order', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'personal_payload', 'label' => __('Personal Payload', 'glossop-caravans'), 'width' => 25),
@@ -174,7 +196,11 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'essential_habitation_equipment', 'label' => __('Essential Habitation Equipment', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'optional_equipment', 'label' => __('Optional Equipment', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'personal_effects', 'label' => __('Personal Effects', 'glossop-caravans'), 'width' => 25),
+
+        array('type' => 'separator', 'label' => __('Other', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'base_vehicle', 'label' => __('Base Vehicle', 'glossop-caravans'), 'width' => 100),
+
+        array('type' => 'separator', 'label' => __('Media', 'glossop-caravans')),
         array('type' => 'oembed', 'name' => '360_walkthrough', 'label' => __('360 Walkthrough', 'glossop-caravans'), 'width' => 50),
         array('type' => 'oembed', 'name' => 'video', 'label' => __('Video tour', 'glossop-caravans'), 'width' => 50),
     ),
@@ -189,12 +215,15 @@ CM_Meta::add_box(array(
     'title'  => __('Campervan Properties', 'glossop-caravans'),
     'screen' => 'campervan',
     'fields' => array(
+        array('type' => 'separator', 'label' => __('Basics', 'glossop-caravans')),
         array('type' => 'text', 'input' => 'number', 'name' => 'price', 'label' => __('Price', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'length', 'label' => __('Length', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'layout', 'label' => __('Layout', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'axles', 'label' => __('Axles', 'glossop-caravans'), 'width' => 25),
         array('type' => 'select', 'name' => 'berths', 'label' => __('Berths', 'glossop-caravans'), 'width' => 25, 'options' => $berths_options),
         array('type' => 'text', 'name' => 'travelling_seats', 'label' => __('Travelling Seats', 'glossop-caravans'), 'width' => 25),
+
+        array('type' => 'separator', 'label' => __('Dimensions', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'overall_length', 'label' => __('Overall Length', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_width', 'label' => __('Overall Width', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_width_incl_mirrors', 'label' => __('Overall Width (including mirrors extended)', 'glossop-caravans'), 'width' => 25),
@@ -202,9 +231,15 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'track_width_rear', 'label' => __('Track Width (Rear)', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'overall_height_incl_aircon', 'label' => __('Overall Height (including Air Conditioning)', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'wheelbase', 'label' => __('Wheelbase', 'glossop-caravans'), 'width' => 25),
+
+        array('type' => 'separator', 'label' => __('Wheels & tyres', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'tyre_size', 'label' => __('Tyre Size', 'glossop-caravans'), 'width' => 25),
-        array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 25),
-        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 25),
+        array('type' => 'text', 'name' => 'tyre_pressure', 'label' => __('Tyre Pressure (bar / psi at quoted MTPLM)', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Beds', 'glossop-caravans')),
+        array('type' => 'textarea', 'name' => 'bed_sizes', 'label' => __('Bed Sizes', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Weights & payload', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'mtplm', 'label' => __('MTPLM', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'mass', 'label' => __('Mass in Running Order', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'personal_payload', 'label' => __('Personal Payload', 'glossop-caravans'), 'width' => 25),
@@ -214,7 +249,11 @@ CM_Meta::add_box(array(
         array('type' => 'text', 'name' => 'essential_habitation_equipment', 'label' => __('Essential Habitation Equipment', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'optional_equipment', 'label' => __('Optional Equipment', 'glossop-caravans'), 'width' => 25),
         array('type' => 'text', 'name' => 'personal_effects', 'label' => __('Personal Effects', 'glossop-caravans'), 'width' => 25),
+
+        array('type' => 'separator', 'label' => __('Other', 'glossop-caravans')),
         array('type' => 'text', 'name' => 'base_vehicle', 'label' => __('Base Vehicle', 'glossop-caravans'), 'width' => 100),
+
+        array('type' => 'separator', 'label' => __('Media', 'glossop-caravans')),
         array('type' => 'oembed', 'name' => '360_walkthrough', 'label' => __('360 Walkthrough', 'glossop-caravans'), 'width' => 50),
         array('type' => 'oembed', 'name' => 'video', 'label' => __('Video tour', 'glossop-caravans'), 'width' => 50),
     ),
@@ -242,8 +281,11 @@ CM_Meta::add_term_box(array(
     'title'      => __('Model Properties', 'glossop-caravans'),
     'taxonomies' => array('caravan_model', 'motorhome_model', 'campervan_model'),
     'fields'     => array(
+        array('type' => 'separator', 'label' => __('Images', 'glossop-caravans')),
         array('type' => 'image', 'name' => 'logo', 'label' => __('Logo', 'glossop-caravans'), 'width' => 50),
         array('type' => 'image', 'name' => 'image', 'label' => __('Image', 'glossop-caravans'), 'width' => 50),
+
+        array('type' => 'separator', 'label' => __('Details', 'glossop-caravans')),
         array('type' => 'association', 'name' => 'page', 'label' => __('Page', 'glossop-caravans'), 'post_type' => 'page', 'max' => 1),
         array(
             'type'   => 'complex',

@@ -207,9 +207,9 @@
             attachments.forEach(function(att) {
                 ids.push(att.id);
                 var url = (att.sizes && att.sizes.thumbnail) ? att.sizes.thumbnail.url : att.url;
-                var itemHtml = '<div class="cm-gallery-item" data-id="' + att.id + '" style="position:relative; display:inline-block;">' +
-                    '<img src="' + url + '" style="max-width:80px; height:auto; border:1px solid #ddd;" />' +
-                    '<button type="button" class="cm-gallery-remove-item" style="position:absolute; top:-5px; right:-5px; background:#d63638; color:#fff; border:none; border-radius:50%; cursor:pointer; width:20px; height:20px; line-height:1; padding:0;" title="' + (wp.media.view.l10n.remove || 'Remove') + '">&times;</button>' +
+                var itemHtml = '<div class="cm-gallery-item" data-id="' + att.id + '">' +
+                    '<img class="cm-gallery-thumb" src="' + url + '" alt="" />' +
+                    '<button type="button" class="cm-gallery-remove-item" title="' + (wp.media.view.l10n.remove || 'Remove') + '">&times;</button>' +
                     '</div>';
                 $preview.append(itemHtml);
             });

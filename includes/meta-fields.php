@@ -20,10 +20,10 @@
  * Field definition array:
  * [
  * 'type'      => 'text|textarea|number|url|select|rich_text|oembed|image|
- * file|gallery|date|association|complex',
- * 'name'      => 'price',              // stored at _price
+ * file|gallery|date|association|complex|separator',
+ * 'name'      => 'price',              // stored at _price (omit for separator)
  * 'label'     => 'Price',
- * 'width'     => 25,                   // optional layout hint (percent)
+ * 'width'     => 25,                   // optional layout hint (percent → 12-col span)
  * 'desc'      => 'help text',          // optional
  * 'options'   => ['v' => 'Label'],     // select
  * 'post_type' => 'page',               // association target
@@ -33,6 +33,8 @@
  * 'header'    => 'listing_name',       // complex: subfield shown in row head
  * 'button'    => 'Add row',            // complex: add-row button label
  * ]
+ *
+ * separator is UI-only (section heading); no name, never saved.
  *
  * @package Coachman
  * @author  Digitally Disruptive - Donald Raymundo
@@ -366,7 +368,7 @@ function cm_meta_collect_values($fields, $context, $object_id)
 {
     $values = array();
     foreach ($fields as $field) {
-        if (empty($field['name'])) {
+        if (empty($field['name']) || (isset($field['type']) && $field['type'] === 'separator')) {
             continue;
         }
         $values[$field['name']] = cm_meta_get_value($field['name'], $context, $object_id);
@@ -388,7 +390,7 @@ function cm_meta_collect_values($fields, $context, $object_id)
 function cm_meta_save_fields($fields, $raw, $context, $object_id)
 {
     foreach ($fields as $field) {
-        if (empty($field['name'])) {
+        if (empty($field['name']) || (isset($field['type']) && $field['type'] === 'separator')) {
             continue;
         }
         $name  = $field['name'];
@@ -446,6 +448,9 @@ function cm_meta_sanitize_field($field, $value)
     $type = isset($field['type']) ? $field['type'] : 'text';
 
     switch ($type) {
+        case 'separator':
+            return null;
+
         case 'textarea':
             return is_scalar($value) ? sanitize_textarea_field((string) $value) : '';
 
@@ -561,10 +566,25 @@ function cm_meta_render_fields($fields, $base, $values)
 {
     $html = '<div class="cm-fields">';
     foreach ($fields as $field) {
-        $html .= cm_meta_render_field($field, $base, isset($values[$field['name']]) ? $values[$field['name']] : null);
+        $name  = isset($field['name']) ? $field['name'] : '';
+        $value = ($name !== '' && isset($values[$name])) ? $values[$name] : null;
+        $html .= cm_meta_render_field($field, $base, $value);
     }
     $html .= '</div>';
     return $html;
+}
+
+/**
+ * Map a percent width hint (1–100) to a 12-column grid span.
+ *
+ * @param int $width Percent width from the field definition.
+ * @return int Span from 1 to 12.
+ */
+function cm_meta_width_to_span($width)
+{
+    $width = max(1, min(100, (int) $width));
+    $span  = (int) round($width / 100 * 12);
+    return max(1, min(12, $span));
 }
 
 /** * Render one field wrapped in its layout cell. 
@@ -576,17 +596,26 @@ function cm_meta_render_fields($fields, $base, $values)
  */
 function cm_meta_render_field($field, $base, $value)
 {
-    $type  = isset($field['type']) ? $field['type'] : 'text';
-    $name  = $field['name'];
+    $type = isset($field['type']) ? $field['type'] : 'text';
+
+    // UI-only section heading — no input, never persisted.
+    if ($type === 'separator') {
+        $label = isset($field['label']) ? $field['label'] : '';
+        return '<div class="cm-field cm-field-separator cm-field--span-12">'
+            . '<h4 class="cm-section-title">' . esc_html($label) . '</h4>'
+            . '</div>';
+    }
+
+    $name  = isset($field['name']) ? $field['name'] : '';
     $input = $base . '[' . $name . ']';
     // Keep any {{token}} placeholder intact so cloned repeater rows get unique
     // ids once the token is replaced with a row index client-side.
     $id    = 'cmf_' . str_replace(array('[', ']'), array('_', ''), $input);
-    $width = isset($field['width']) ? max(1, min(100, (int) $field['width'])) : 100;
+    $width = isset($field['width']) ? (int) $field['width'] : 100;
+    $span  = cm_meta_width_to_span($width);
     $label = isset($field['label']) ? $field['label'] : $name;
 
-    $style = 'flex:0 0 ' . $width . '%;max-width:' . $width . '%;';
-    $html  = '<div class="cm-field cm-field-' . esc_attr($type) . '" style="' . esc_attr($style) . '">';
+    $html = '<div class="cm-field cm-field-' . esc_attr($type) . ' cm-field--span-' . (int) $span . '">';
 
     // Complex renders its own header; everything else gets a label.
     if ($type !== 'complex') {
@@ -732,15 +761,15 @@ function cm_meta_render_gallery($field, $input, $id, $value)
 
     $html  = '<div class="cm-media cm-gallery" data-type="gallery">';
     $html .= '<input type="hidden" class="cm-gallery-ids" id="' . esc_attr($id) . '" name="' . esc_attr($input) . '" value="' . esc_attr($ids_string) . '">';
-    $html .= '<div class="cm-gallery-preview" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">';
+    $html .= '<div class="cm-gallery-preview">';
 
     foreach ($ids as $att_id) {
         if ($att_id > 0) {
-            $img = wp_get_attachment_image($att_id, 'thumbnail', false, array('style' => 'max-width:80px; height:auto; border:1px solid #ddd;'));
+            $img = wp_get_attachment_image($att_id, 'thumbnail', false, array('class' => 'cm-gallery-thumb'));
             if ($img) {
-                $html .= '<div class="cm-gallery-item" data-id="' . esc_attr((string) $att_id) . '" style="position:relative; display:inline-block;">';
+                $html .= '<div class="cm-gallery-item" data-id="' . esc_attr((string) $att_id) . '">';
                 $html .= $img;
-                $html .= '<button type="button" class="cm-gallery-remove-item" style="position:absolute; top:-5px; right:-5px; background:#d63638; color:#fff; border:none; border-radius:50%; cursor:pointer; width:20px; height:20px; line-height:1; padding:0;" title="' . esc_attr__('Remove image', 'glossop-caravans') . '">&times;</button>';
+                $html .= '<button type="button" class="cm-gallery-remove-item" title="' . esc_attr__('Remove image', 'glossop-caravans') . '">&times;</button>';
                 $html .= '</div>';
             }
         }

@@ -1,24 +1,51 @@
 /* Coachman standalone meta-fields — admin styling. */
 
+/* Layout: 12-column grid -------------------------------------------- */
+
 .cm-meta-box .cm-fields,
 .cm-fields {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 2%;
-    align-items: flex-start;
-    margin: 4px 0;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px 20px;
+    align-items: start;
+    margin: 8px 0 4px;
 }
 
 .cm-field {
     box-sizing: border-box;
     margin: 0;
+    min-width: 0;
 }
+
+.cm-field--span-1  { grid-column: span 1; }
+.cm-field--span-2  { grid-column: span 2; }
+.cm-field--span-3  { grid-column: span 3; }
+.cm-field--span-4  { grid-column: span 4; }
+.cm-field--span-5  { grid-column: span 5; }
+.cm-field--span-6  { grid-column: span 6; }
+.cm-field--span-7  { grid-column: span 7; }
+.cm-field--span-8  { grid-column: span 8; }
+.cm-field--span-9  { grid-column: span 9; }
+.cm-field--span-10 { grid-column: span 10; }
+.cm-field--span-11 { grid-column: span 11; }
+.cm-field--span-12 { grid-column: span 12; }
+
+@media screen and (max-width: 782px) {
+    .cm-field[class*="cm-field--span-"] {
+        grid-column: span 12;
+    }
+}
+
+/* Labels & inputs ---------------------------------------------------- */
 
 .cm-field .cm-label,
 .cm-field-head .cm-label {
     display: block;
     font-weight: 600;
-    margin-bottom: 4px;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    color: #1d2327;
 }
 
 .cm-field .cm-input,
@@ -27,10 +54,61 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #8c8f94;
+    border-radius: 2px;
+    padding: 4px 8px;
+    min-height: 30px;
+    line-height: 1.4;
+    color: #2c3338;
+    box-shadow: none;
+}
+
+.cm-field textarea.cm-input {
+    min-height: 80px;
+    padding: 8px;
+    resize: vertical;
+}
+
+.cm-field select.cm-input {
+    max-width: 100%;
+}
+
+.cm-field .cm-input:focus,
+.cm-field textarea.cm-input:focus,
+.cm-field select.cm-input:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: 2px solid transparent;
 }
 
 .cm-field .description {
-    margin: 4px 0 0;
+    margin: 6px 0 0;
+    color: #646970;
+    font-size: 12px;
+}
+
+/* Section separators ------------------------------------------------- */
+
+.cm-field-separator {
+    margin: 8px 0 0;
+    padding: 0;
+}
+
+.cm-field-separator:first-child {
+    margin-top: 0;
+}
+
+.cm-section-title {
+    margin: 0;
+    padding: 10px 0 8px;
+    border-bottom: 1px solid #dcdcde;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #1d2327;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 /* Media -------------------------------------------------------------- */
@@ -46,6 +124,7 @@
     border: 1px solid #dcdcde;
     background: #fff;
     padding: 3px;
+    border-radius: 2px;
 }
 
 .cm-media .cm-file-name {
@@ -56,18 +135,70 @@
     font-size: 12px;
 }
 
+.cm-media .button + .button {
+    margin-left: 4px;
+}
+
+/* Gallery ------------------------------------------------------------ */
+
+.cm-gallery-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    min-height: 0;
+}
+
+.cm-gallery-item {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+}
+
+.cm-gallery-item img,
+.cm-gallery-thumb {
+    max-width: 80px;
+    height: auto;
+    display: block;
+    border: 1px solid #dcdcde;
+    background: #fff;
+    border-radius: 2px;
+}
+
+.cm-gallery-remove-item {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    line-height: 1;
+    border: none;
+    border-radius: 50%;
+    background: #d63638;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.cm-gallery-remove-item:hover {
+    background: #b32d2e;
+}
+
 /* Repeater ----------------------------------------------------------- */
 
 .cm-field-complex {
     width: 100%;
-    flex: 0 0 100%;
-    max-width: 100%;
+}
+
+.cm-field-head {
+    margin-bottom: 8px;
 }
 
 .cm-repeater {
     border: 1px solid #dcdcde;
     border-radius: 4px;
-    padding: 10px;
+    padding: 12px;
     background: #f6f7f7;
 }
 
@@ -77,17 +208,23 @@
     gap: 10px;
 }
 
+.cm-repeater .cm-rows:empty {
+    display: none;
+}
+
 .cm-row {
     background: #fff;
     border: 1px solid #dcdcde;
     border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 
 .cm-row-handle {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 10px;
+    gap: 8px;
+    padding: 8px 12px;
     background: #f0f0f1;
     border-bottom: 1px solid #dcdcde;
     border-radius: 4px 4px 0 0;
@@ -95,6 +232,13 @@
 
 .cm-row-title {
     font-weight: 600;
+    font-size: 13px;
+    color: #1d2327;
+    min-height: 1.2em;
+}
+
+.cm-row-title:empty::before {
+    content: "\00a0";
 }
 
 .cm-remove-row {
@@ -103,6 +247,7 @@
     font-size: 18px;
     line-height: 1;
     cursor: pointer;
+    padding: 0 2px;
 }
 
 .cm-remove-row:hover {
@@ -110,7 +255,7 @@
 }
 
 .cm-row-body {
-    padding: 10px;
+    padding: 12px;
 }
 
 /* Nested repeaters get a subtle inset. */
@@ -119,11 +264,38 @@
 }
 
 .cm-add-row {
-    margin-top: 4px;
+    margin-top: 10px;
 }
 
-/* In the term edit table our box spans full width. */
+.cm-repeater > p {
+    margin: 10px 0 0;
+}
+
+.cm-repeater > p:first-child {
+    margin-top: 0;
+}
+
+/* Options pages ------------------------------------------------------ */
+
+form.cm-meta-box {
+    max-width: 1100px;
+    margin-top: 12px;
+    padding: 16px 20px 20px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+form.cm-meta-box .submit {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Term edit screens -------------------------------------------------- */
+
 .edit-tags-php .cm-meta-box,
 .term-php .cm-meta-box {
-    max-width: 800px;
+    max-width: 1100px;
+    padding: 4px 0;
 }
