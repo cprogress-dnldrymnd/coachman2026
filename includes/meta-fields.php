@@ -945,7 +945,9 @@ function cm_meta_render_complex_row($subfields, $input, $index, $row, $header_fi
     }
 
     $html  = '<div class="cm-row">';
-    $html .= '<div class="cm-row-handle"><span class="cm-row-title">' . esc_html($header_text) . '</span>';
+    $html .= '<div class="cm-row-handle">';
+    $html .= '<span class="cm-row-drag dashicons dashicons-menu" title="' . esc_attr__('Drag to reorder', 'glossop-caravans') . '" aria-label="' . esc_attr__('Drag to reorder', 'glossop-caravans') . '"></span>';
+    $html .= '<span class="cm-row-title">' . esc_html($header_text) . '</span>';
     $html .= '<button type="button" class="button-link cm-remove-row" aria-label="' . esc_attr__('Remove row', 'glossop-caravans') . '">&times;</button></div>';
     $html .= '<div class="cm-row-body">';
     $html .= cm_meta_render_fields($subfields, $row_base, is_array($row) ? $row : array());
@@ -974,5 +976,5 @@ function cm_meta_admin_assets($hook)
     wp_enqueue_media();
     wp_enqueue_editor();
     wp_enqueue_style('cm-meta-fields', assets_dir . 'admin/meta-fields.css', array(), version);
-    wp_enqueue_script('cm-meta-fields', assets_dir . 'admin/meta-fields.js', array('jquery', 'wp-util'), version, true);
+    wp_enqueue_script('cm-meta-fields', assets_dir . 'admin/meta-fields.js', array('jquery', 'jquery-ui-sortable', 'wp-util'), version, true);
 }

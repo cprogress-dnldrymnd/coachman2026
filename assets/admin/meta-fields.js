@@ -1,9 +1,9 @@
 /**
  * Coachman standalone meta-fields — admin UI.
  *
- * Drives repeaters (add/remove rows, incl. nested), media pickers and
+ * Drives repeaters (add/remove/reorder rows, incl. nested), media pickers and
  * client-side TinyMCE init for rich-text fields. No build step; relies on
- * jQuery + wp.media + wp.editor enqueued by includes/meta-fields.php.
+ * jQuery + jQuery UI Sortable + wp.media + wp.editor enqueued by includes/meta-fields.php.
  */
 (function ($) {
     'use strict';
@@ -101,6 +101,7 @@
         }
         rows.appendChild(newRow);
         initRichText(newRow);
+        initSortable(newRow);
     });
 
     /**
@@ -117,6 +118,42 @@
         });
         row.parentNode.removeChild(row);
     });
+
+    /**
+     * Enables drag-and-drop reordering on every repeater's direct rows.
+     * Nested repeaters get their own sortable instance. Form field names keep
+     * their indices; PHP's array_values() on save preserves DOM / POST order.
+     *
+     * @param {Document|HTMLElement} scope Container to search within.
+     */
+    function initSortable(scope) {
+        $(scope).find('.cm-rows').each(function () {
+            var $rows = $(this);
+            if ($rows.data('ui-sortable')) {
+                return;
+            }
+            $rows.sortable({
+                items: '> .cm-row',
+                handle: '.cm-row-drag',
+                axis: 'y',
+                cursor: 'move',
+                opacity: 0.85,
+                placeholder: 'cm-row-placeholder',
+                forcePlaceholderSize: true,
+                tolerance: 'pointer',
+                start: function (e, ui) {
+                    // TinyMCE breaks when its textarea is moved in the DOM.
+                    ui.item.find('.cm-richtext').each(function () {
+                        removeEditor(this);
+                    });
+                    ui.placeholder.height(ui.item.outerHeight());
+                },
+                stop: function (e, ui) {
+                    initRichText(ui.item[0]);
+                }
+            });
+        });
+    }
 
     /* ---------------------------------------------------------------- */
     /* Media picker (image / file).                                      */
@@ -300,6 +337,7 @@
         // Editors inside <template> prototypes are inert (separate fragment) and
         // are not matched here — only live rows get initialised.
         initRichText(document);
+        initSortable(document);
     });
 
 })(jQuery);

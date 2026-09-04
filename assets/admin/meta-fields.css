@@ -276,7 +276,6 @@
 .cm-row-handle {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 8px;
     padding: 8px 12px;
     background: #f0f0f1;
@@ -284,11 +283,46 @@
     border-radius: 4px 4px 0 0;
 }
 
+.cm-row-drag {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    color: #787c82;
+    cursor: grab;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.cm-row-drag:active {
+    cursor: grabbing;
+}
+
+.cm-row-drag:hover {
+    color: #1d2327;
+}
+
 .cm-row-title {
+    flex: 1 1 auto;
     font-weight: 600;
     font-size: 13px;
     color: #1d2327;
     min-height: 1.2em;
+    min-width: 0;
+}
+
+.cm-row-placeholder {
+    box-sizing: border-box;
+    margin: 0;
+    background: #f0f6fc;
+    border: 1px dashed #2271b1;
+    border-radius: 4px;
+    visibility: visible !important;
+}
+
+.cm-row.ui-sortable-helper {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .cm-row-title:empty::before {
@@ -296,6 +330,7 @@
 }
 
 .cm-remove-row {
+    flex: 0 0 auto;
     color: #b32d2e;
     text-decoration: none;
     font-size: 18px;
