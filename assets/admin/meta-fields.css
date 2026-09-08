@@ -12,7 +12,8 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-.cm-fields--grouped {
+.cm-meta-box .cm-fields.cm-fields--grouped,
+.cm-fields.cm-fields--grouped {
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -23,6 +24,7 @@
 
 .cm-field-group {
     display: block;
+    grid-column: 1 / -1;
     width: 100%;
     margin: 0;
     padding: 0;
