@@ -292,7 +292,9 @@ function specifications($post_id)
         <?= specification($post_id, 'personal_effects', 'Personal Effects') ?>
     </div>
 
-    <?php if (get_post_type($post_id) == 'caravan') {
+    <?php
+    $post_type = get_post_type($post_id);
+    if ($post_type == 'caravan') {
         $caravan_text = get__theme_option('caravan_text');
         if (!empty($caravan_text)) {
     ?>
@@ -300,7 +302,11 @@ function specifications($post_id)
                 <?php echo wp_kses_post($caravan_text); ?>
             </p>
         <?php }
-    } else { ?>
+    } elseif ($post_type == 'campervan') { ?>
+        <div class="otr-price mt-4">
+            <?= do_shortcode('[campervan_text_long]') ?>
+        </div>
+    <?php } else { ?>
         <div class="otr-price mt-4">
             <?= do_shortcode('[motorhome_text_long]') ?>
         </div>

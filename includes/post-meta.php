@@ -425,3 +425,13 @@ CM_Meta::add_options_page(array(
         array('type' => 'rich_text', 'name' => 'motorhome_text_long', 'label' => __('Motorhome Text Long', 'glossop-caravans'), 'width' => 100),
     ),
 ));
+
+CM_Meta::add_options_page(array(
+    'id'     => 'campervan_settings',
+    'title'  => __('Campervan Settings', 'glossop-caravans'),
+    'parent' => 'edit.php?post_type=campervan',
+    'fields' => array(
+        array('type' => 'rich_text', 'name' => 'campervan_text', 'label' => __('Campervan Text Short', 'glossop-caravans'), 'width' => 100),
+        array('type' => 'rich_text', 'name' => 'campervan_text_long', 'label' => __('Campervan Text Long', 'glossop-caravans'), 'width' => 100),
+    ),
+));

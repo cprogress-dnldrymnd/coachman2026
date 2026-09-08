@@ -140,3 +140,13 @@ function motorhome_text_long() {
     return wpautop(get__theme_option('motorhome_text_long'));
 }
 add_shortcode('motorhome_text_long', 'motorhome_text_long');
+
+function campervan_text() {
+    return wpautop(get__theme_option('campervan_text'));
+}
+add_shortcode('campervan_text', 'campervan_text');
+
+function campervan_text_long() {
+    return wpautop(get__theme_option('campervan_text_long'));
+}
+add_shortcode('campervan_text_long', 'campervan_text_long');
